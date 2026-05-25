@@ -328,7 +328,7 @@
     <div class="prizes-container">
         <div class="prize-card full-width">
             <div><span class="prize-tag edit-target">1º PRÊMIO</span><button class="edit-btn" onclick="openEditModal(this, 'text', '-8')"></button></div><br>
-            <div class="editable-wrapper" style="margin: 10px 0;"><p class="prize-value edit-target">R$ 400,00 REAIS NO PIX</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-9')"></button></div>
+            <div class="editable-wrapper" style="margin: 10px 0;"><p class="prize-value edit-target">Nome do Prêmio</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-9')"></button></div>
             <div class="editable-wrapper full-width"><img src="" class="edit-target" alt="Notas"><button class="edit-btn" onclick="openEditModal(this, 'image', '-10')"></button></div>
         </div>
     </div>
@@ -336,7 +336,7 @@
      <div class="prizes-container">
         <div class="prize-card full-width">
             <div><span class="prize-tag edit-target">2º PRÊMIO</span><button class="edit-btn" onclick="openEditModal(this, 'text', '-11')"></button></div><br>
-            <div class="editable-wrapper" style="margin: 10px 0;"><p class="prize-value edit-target">R$ 100,00 REAIS NO PIX</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-12')"></button></div>
+            <div class="editable-wrapper" style="margin: 10px 0;"><p class="prize-value edit-target">Nome do Prêmio</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-12')"></button></div>
             <div class="editable-wrapper full-width"><img src="" class="edit-target" alt="Notas"><button class="edit-btn" onclick="openEditModal(this, 'image', '-13')"></button></div>
         </div>
      </div>
@@ -372,7 +372,7 @@
     </form>
 
     <div class="date-box">
-        <div class="editable-wrapper full-width"><p class="date-label edit-target">Valor do Sorteio: R$ 32.00 REAIS</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-14')"></button></div>
+        <div class="editable-wrapper full-width"><p class="date-label edit-target">Valor do Sorteio: R$ 00.00 REAIS</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-14')"></button></div>
         <div class="countdown-inner">
             <div class="full-width"><p class="date-title edit-target">DATA DO SORTEIO:</p></div>
             <div class="editable-wrapper full-width"><p id="countdown" class="edit-target" style="font-weight: bold; margin-top: 5px;">Quando todos os...</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-15')"></button></div>
@@ -380,11 +380,11 @@
     </div>
 
     <div class="date-box" style="margin-top: 15px;">
-        <div class="editable-wrapper full-width"><p class="edit-target">Texto Adicional 1 Novo</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-16')"></button></div>
+        <div class="editable-wrapper full-width"><p class="edit-target">TEXTO OFF</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-16')"></button></div>
     </div>
 
     <div class="date-box" style="margin-top: 15px;">
-        <div class="editable-wrapper full-width"><p class="edit-target">Texto Adicional 2 Novo</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-17')"></button></div>
+        <div class="editable-wrapper full-width"><p class="edit-target">TEXTO OFF</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-17')"></button></div>
     </div>
 </div>
 
@@ -689,12 +689,12 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
 
     function executarAcaoQuantidade() {
         const valor = document.getElementById('inputQuantidade').value;
-        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe84Gnlx55Za57K5DscxEm-vf425KUsiTXP_A9Qb8q93TttXw/formResponse";
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.624057932", valor);
-        formData.append("entry.818510544", "19");
-        formData.append("entry.1941861272", "CONFIG_QUANTIDADE_NUMEROS");
+        formData.append("entry.1725042433", valor);
+        formData.append("entry.790821356", "19");
+        formData.append("entry.718294531", "CONFIG_QUANTIDADE_NUMEROS");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -702,12 +702,12 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
 
     function executarAcaoQuantidade2() {
         const valor = document.getElementById('inputQuantidade2').value;
-        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe84Gnlx55Za57K5DscxEm-vf425KUsiTXP_A9Qb8q93TttXw/formResponse";
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.624057932", valor);
-        formData.append("entry.818510544", "20"); 
-        formData.append("entry.1941861272", "CONFIG_VALOR_NUMERO");
+        formData.append("entry.1725042433", valor);
+        formData.append("entry.790821356", "20"); 
+        formData.append("entry.718294531", "CONFIG_VALOR_NUMERO");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -715,12 +715,12 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
 
     function executarAcaoQuantidade3() {
         const valor = document.getElementById('inputQuantidade3').value;
-        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe84Gnlx55Za57K5DscxEm-vf425KUsiTXP_A9Qb8q93TttXw/formResponse";
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.624057932", valor);
-        formData.append("entry.818510544", "21"); 
-        formData.append("entry.1941861272", "CONFIG_CHAVE_PIX");
+        formData.append("entry.1725042433", valor);
+        formData.append("entry.790821356", "21"); 
+        formData.append("entry.718294531", "CONFIG_CHAVE_PIX");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -729,14 +729,14 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
     function executarAcao() {
         const valorInput = document.getElementById('modalInput' + currentModalId).value;
         const valorInput2 = document.getElementById('modalInput-2' + currentModalId).value;
-        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe84Gnlx55Za57K5DscxEm-vf425KUsiTXP_A9Qb8q93TttXw/formResponse";
+        const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.624057932", valorInput);
-        formData.append("entry.818510544", valorInput2);
+        formData.append("entry.1725042433", valorInput);
+        formData.append("entry.90821356", valorInput2);
 
         if (modoSelecionado === 'editar') {
-            formData.append("entry.1941861272", "Editado");
+            formData.append("entry.718294531", "Editado");
             if (currentType === 'image') currentTarget.src = valorInput;
             else currentTarget.innerText = valorInput;
         }
