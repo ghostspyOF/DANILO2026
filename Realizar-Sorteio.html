@@ -1,0 +1,1215 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <title>Sistema Oficial de Sorteios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f4f7f6 0%, #e9ecef 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 30px 20px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+            padding: 40px;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            border-top: 5px solid #0056b3;
+            position: relative;
+        }
+
+        .badge-seguro {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e6f4ea;
+            color: #137333;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-seguro::before {
+            content: "🔒";
+            margin-right: 6px;
+        }
+
+        h1 {
+            color: #1a202c;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitulo {
+            color: #4a5568;
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3748;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 1.5px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #2d3748;
+            background-color: #f8fafc;
+            transition: all 0.2s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #0056b3;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+            outline: none;
+        }
+
+        .btn-sortear {
+            width: 100%;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2);
+        }
+
+        .btn-sortear:hover {
+            background-color: #004085;
+            box-shadow: 0 6px 16px rgba(0, 86, 179, 0.3);
+        }
+
+        .btn-sortear:active {
+            transform: translateY(1px);
+        }
+
+        .btn-sortear:disabled {
+            background-color: #a0aec0 !important;
+            border-color: #cbd5e0 !important;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .resultado-container {
+            margin-top: 35px;
+            padding: 25px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .resultado-title {
+            font-size: 1.1rem;
+            color: #1a202c;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .numeros-sorteados {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .numero-bola {
+            background: #0056b3;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: 700;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .numero-bola.girando {
+            background: linear-gradient(45deg, #ff9f43, #ee5253);
+            animation: girarBola 0.15s infinite linear;
+            box-shadow: 0 0 15px rgba(238, 82, 83, 0.4);
+        }
+
+        .bilhete-ganhador {
+            background: #fff;
+            border: 2px dashed #0056b3;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            width: 100%;
+            max-width: 300px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            animation: popIn 0.5s ease;
+        }
+
+        .bilhete-topo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #0056b3;
+            border-bottom: 1px dashed #cbd5e0;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .bilhete-nome {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 5px;
+        }
+
+        .bilhete-zap {
+            font-size: 0.95rem;
+            color: #25d366;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .info-rodape {
+            margin-top: 25px;
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-weight: 500;
+        }
+
+        .bloco-transmissao {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fcf8ff;
+            border: 1px dashed #d6bcfa;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .bloco-transmissao p {
+            font-size: 0.9rem;
+            color: #553c9a;
+            line-height: 1.5;
+        }
+
+        .btn-admin {
+            position: relative;
+            padding: 25px 20px;
+            margin: 5px;                                                  
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #dd6b20, #dd6b20, #dd6b20, #dd6b20);
+            background-size: 400%;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-admin:hover {
+            background-color: #f7fafc;
+            color: #718096;
+            border-color: #cbd5e0;
+        }
+
+        .modal-admin {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            text-align: left;
+            animation: popIn 0.3s ease;
+        }
+
+        .modal-content.card-aviso {
+            max-width: 460px;
+            text-align: center;
+            border-top: 4px solid #dd6b20;
+        }
+
+        .modal-content.card-aviso h2 {
+            justify-content: center;
+            color: #dd6b20;
+        }
+
+        .modal-content h2 {
+            font-size: 1.4rem;
+            color: #1a202c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-content textarea {
+            width: 100%;
+            height: 200px;
+            padding: 12px;
+            border: 1.5px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: monospace;
+            resize: none;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+        }
+
+        .modal-content textarea:focus {
+            border-color: #0056b3;
+            outline: none;
+            background-color: #fff;
+        }
+
+        .modal-botoes {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-fechar {
+            background-color: #edf2f7;
+            color: #4a5568;
+            border: none;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-anonimo {
+            background-color: #718096;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-anonimo:hover {
+            background-color: #4a5568;
+        }
+
+        .btn-salvar {
+            background-color: #137333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-prosseguir {
+            background-color: #dd6b20;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .wrapper-linha-divisoria {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .particula-fogo {
+            position: absolute;
+            bottom: 0;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 1;
+            animation: explodirParticula 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes explodirParticula {
+            0% {
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--x), var(--y)) scale(0.3);
+                opacity: 0;
+            }
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.6); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes girarBola {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1) rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 25px 20px;
+            }
+            .modal-botoes {
+                justify-content: center;
+                flex-direction: column;
+                width: 100%;
+            }
+            .modal-botoes button {
+                width: 100%;
+            }
+        }
+    
+        #bloqueio-seguranca {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 999999;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .modal-autenticacao {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        .modal-autenticacao h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .modal-autenticacao p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 20px;
+        }
+        .campo-autenticacao {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            background-color: #f8fafc;
+        }
+        .campo-autenticacao:focus {
+            border-color: #3b82f6;
+        }
+        .btn-acessar {
+            width: 100%;
+            background-color: #3b82f6;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-acessar:hover {
+            background-color: #2563eb;
+        }
+        .msg-erro {
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="bloqueio-seguranca">
+        <div class="modal-autenticacao" style="position: relative; padding-top: 40px;">
+           <a href="index.html" 
+   style="position: absolute; 
+          top: 15px; 
+          right: 15px; /* <--- Mudado de left para right */
+          color: #dc2626; 
+          text-decoration: none; 
+          font-family: Arial, sans-serif; 
+          font-size: 40px; 
+          font-weight: bold; 
+          line-height: 1; 
+          cursor: pointer;
+          transition: transform 0.2s;"
+   onmouseover="this.style.transform='scale(1.2)'" 
+   onmouseout="this.style.transform='scale(1)'"
+   title="Voltar para o início">
+    &times;
+</a>
+
+            <h2 style="font-size: 40px;">Área Restrita</h2>
+            <p>Insira suas credenciais para gerenciar o site</p>
+            
+            <input type="text" id="authID" class="campo-autenticacao" placeholder="Digite o ID de usuário">
+            <input type="password" id="authSenha" class="campo-autenticacao" placeholder="Digite a senha">
+            
+            <button type="button" class="btn-acessar" onclick="validarAcessoPainel()">ENTRAR</button><br>
+            
+            <a href="https://api.whatsapp.com/send?phone=5562995679219&text=Eu%20gostaria%20de%20saber%20a%20senha%20para%20editar%20o%20site" 
+               target="_blank" 
+               style="display: inline-block; 
+                      margin-top: 20px; 
+                      padding: 12px 24px; 
+                      background: linear-gradient(135deg, #25D366, #128C7E); 
+                      color: white; 
+                      text-decoration: none; 
+                      font-family: 'Segoe UI', sans-serif; 
+                      font-size: 14px; 
+                      font-weight: bold; 
+                      border-radius: 50px; 
+                      text-transform: uppercase; 
+                      letter-spacing: 0.5px; 
+                      box-shadow: 0 0 15px #25D366, 0 0 30px rgba(37, 211, 102, 0.4); 
+                      transition: all 0.3s ease; 
+                      animation: brilhoPulsante 1.5s infinite alternate;">
+                Esqueci a senha
+            </a>
+            
+            <div id="erroAuth" class="msg-erro">ID ou Senha incorretos!</div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="badge-seguro">Ambiente 100% Seguro 🔒</div>
+
+        <h1 style="color: #1834a3;">Sorteio</h1>
+        <p class="subtitulo">
+            Chegou o grande dia de conhecer quem levou a melhor no nosso sorteio!
+        </p>
+        <div class="wrapper-linha-divisoria" id="linhaDivisoria">
+            <hr>
+        </div>
+        
+        <div class="input-grid">
+            <div class="input-group">
+                <label for="totalNumeros">Quantidades de Números do Sorteio</label>
+                <input type="number" id="totalNumeros" min="1" placeholder="Ex: 984">
+            </div>
+
+            <div class="input-group">
+                <label for="qtdSortear">Quantidades de Números a Sortear</label>
+                <input type="number" id="qtdSortear" min="1" placeholder="Ex: 2">
+            </div>
+        </div>
+
+        <button class="btn-sortear" id="btnOficial" onclick="executarSorteio(false)">Começar Sorteio Oficial</button>
+        
+
+        <div class="resultado-container" id="resultadoContainer">
+            <div class="resultado-title" id="resultadoGeralTitulo">🎉 Número(s) Sorteado(s) 🎉</div>
+            <div class="numeros-sorteados" id="espacoNumeros"></div>
+        </div>
+
+        
+        <hr style="margin-top: 60%;">
+        <p class="info-rodape">O sorteio oficial será realizado por aqui mesmo.</p>
+        <button class="btn-admin" onclick="abrirAdmin()">CADASTRAR LISTA</button>
+        <div class="bloco-transmissao">
+            <p style="color: #0056b3; font-weight: bold;">
+                Cadastre uma lista para o sorteio ficar com uma aparência melhor e mais profissional!
+            </p><br>          
+        </div>
+        
+        
+        <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; border-left: 4px; solid #28a745; padding: 15px; border-radius: 4px; max-width: 450px;">
+  <h4 style="margin: 0 0 8px 0; color: red;">
+      Certifique-se de que a lista de nomes de cada integrante siga o padrão apresentado no exemplo abaixo:
+  </h4>
+  <div style="background-color: #e9ecef; padding: 8px 12px; border-radius: 4px; font-family: monospace; font-size: 14px; color: #333; line-height: 1.6;">
+    1- Mayckon: 62977776666<br>
+    2- Jhonatas: 62966667777<br>
+  </div>
+</div>
+</div>
+
+    <div class="modal-admin" id="modalAvisoLista">
+        <div class="modal-content card-aviso">
+            <div style="display: flex; justify-content: center; margin-bottom: 15px;">
+                <div style="background-color: red; color: white; font-weight: bold; font-size: 32px; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);">!</div>
+            </div>
+            <h2>Lista de Participantes Vazia</h2>
+            <p style="font-size: 0.95rem; color: #4a5568; margin-bottom: 20px; line-height: 1.5;">Você ainda não cadastrou os participantes. Deseja cadastrar agora ou realizar o sorteio de forma anônima?</p>
+            <div class="modal-botoes" style="justify-content: center; gap: 10px;">
+                <button class="btn-anonimo" onclick="confirmarSorteioAnonimo()">SORTEIO ANÔNIMO</button>
+                <button class="btn-prosseguir" onclick="prosseguirParaAdmin()">Cadastrar Lista</button>
+                <button class="btn-fechar" onclick="fecharAvisoLista()">VOLTAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-admin" id="modalAdmin">
+        <div class="modal-content">
+            <h2>Cadastro de Participantes</h2>
+            <p style="font-size: 0.85rem; color: #718096; margin-bottom: 10px;">Cole a lista no formato do exemplo abaixo: </p>
+            <textarea id="listaParticipantes" placeholder="1 - Maria: 62 995679219&#10;2 - Mayckon: 62 995679218"></textarea>
+            <div class="modal-botoes">
+                <button class="btn-fechar" onclick="fecharAdmin()">Fechar</button>
+                <button class="btn-salvar" onclick="salvarParticipantes()">Salvar Lista</button>
+            </div>
+        </div>
+    </div>
+    
+      <div id="alertaSucesso" style="
+    position: fixed; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    
+    background: rgba(20, 23, 42, 0.95); 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.1);  
+    color: #f8fafc; 
+    padding: 32px 40px; 
+    border-radius: 20px; 
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+    font-weight: 600; 
+    font-size: 2rem; 
+    letter-spacing: -0.2px;
+    
+    /* Sombra suave e profunda */
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+    
+    display: none; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 20px; 
+    text-align: center;    
+    z-index: 100000; 
+    max-width: 380px;
+    width: 85%;
+">
+    <div style="
+        background: rgba(34, 197, 94, 0.15); 
+        padding: 16px; 
+        border-radius: 50%; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        border: 1px solid rgba(34, 197, 94, 0.3);
+    ">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+            <circle cx="12" cy="5" r="2"></circle>
+            <path d="M12 7v4"></path>
+            <line x1="8" y1="16" x2="8" y2="16"></line>
+            <line x1="16" y1="16" x2="16" y2="16"></line>
+        </svg>
+    </div>
+    
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+        <span style="font-size: 1.1rem; font-weight: 700; color: #ffffff;">Sucesso!</span>
+        <span style="font-size: 1.1rem; color: #94a3b8; font-weight: 400; line-height: 1.4;">
+            Lista de participantes processada e salva com sucesso.
+        </span>
+    </div>
+</div>
+
+       
+    <script>
+        function validarAcessoPainel() {
+            const usuarioInput = document.getElementById('authID').value.trim();
+            const senhaInput = document.getElementById('authSenha').value.trim();
+            const divErro = document.getElementById('erroAuth');
+
+            const urlBackend = "https://script.google.com/macros/s/AKfycbxnFPcHlGE0qldY0LBW1YEwRyyNt9Oeh_NqAXEnjM2srfwgvElum5JmfSYmPqP6NzhJZA/exec";
+
+            if (!usuarioInput || !senhaInput) {
+                if (divErro) divErro.style.display = 'block';
+                return;
+            }
+
+            const nomeCallback = 'meuCallbackOuvinte_' + Math.round(Math.random() * 1000000);
+            
+            window[nomeCallback] = function(resultado) {
+                const telaBloqueio = document.getElementById('bloqueio-seguranca');
+                
+                if (resultado && resultado.autorizado === true) {
+                    if (telaBloqueio) telaBloqueio.style.display = 'none';
+                    if (divErro) divErro.style.display = 'none';
+                } else {
+                    if (divErro) divErro.style.display = 'block';
+                    document.getElementById('authSenha').value = '';
+                }
+                
+                document.body.removeChild(scriptElemento);
+                delete window[nomeCallback];
+            };
+
+            const parametros = `?usuario=${encodeURIComponent(usuarioInput)}&senha=${encodeURIComponent(senhaInput)}&callback=${nomeCallback}`;
+            const scriptElemento = document.createElement('script');
+            scriptElemento.src = urlBackend + parametros;
+            
+            scriptElemento.onerror = function() {
+                alert("Erro de autenticação: Verifique sua conexão ou a configuração do script.");
+                if (divErro) divErro.style.display = 'block';
+                document.body.removeChild(scriptElemento);
+                delete window[nomeCallback];
+            };
+
+            document.body.appendChild(scriptElemento);
+        }
+
+        document.getElementById('authSenha').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                validarAcessoPainel();
+            }
+        });
+        
+        let bancoParticipantes = {};
+
+        function fecharAvisoLista() {
+            document.getElementById('modalAvisoLista').style.display = 'none';
+        }
+
+        function prosseguirParaAdmin() {
+            fecharAvisoLista();
+            abrirAdmin();
+        }
+
+        function confirmarSorteioAnonimo() {
+            fecharAvisoLista();
+            executarSorteio(true); 
+        }
+
+        function abrirAdmin() {
+            document.getElementById('modalAdmin').style.display = 'flex';
+        }
+
+        function fecharAdmin() {
+            document.getElementById('modalAdmin').style.display = 'none';
+        }
+
+                
+        function salvarParticipantes() {
+    const texto = document.getElementById('listaParticipantes').value;
+    const linhas = texto.split(/\r?\n/);
+    bancoParticipantes = {}; 
+
+    linhas.forEach(linha => {
+        if (!linha.trim()) return;
+
+        // Captura o primeiro número da linha e separa o resto do texto
+        const match = linha.match(/^\s*(\d+)\s*[\s\-\:\.\,]*\s*(.*)$/);
+        
+        if (match) {
+            const numero = parseInt(match[1], 10);
+            const restante = match[2].trim();
+
+            // Tenta separar o Nome do WhatsApp se houver um sinal de dois pontos (:) no que sobrou
+            let nome = restante;
+            let zap = "";
+
+            if (restante.includes(':')) {
+                const partesRestante = restante.split(':');
+                nome = partesRestante[0].trim();
+                zap = partesRestante.slice(1).join(':').trim();
+            }
+
+            // Salva no banco usando o número encontrado no início
+            bancoParticipantes[numero] = { 
+                nome: nome || `Participante ${numero}`, 
+                zap: zap || "Não informado" 
+            };
+        }
+    });
+
+    // --- O ALERTA FOI MUDADO AQUI ---
+    fecharAdmin(); // Fecha a tela de cadastro primeiro
+
+    // Cria e exibe o alerta bonito dinamicamente na tela
+    const alerta = document.getElementById('alertaSucesso');
+    alerta.style.display = 'flex';
+
+    // Esconde o alerta automaticamente depois de 3 segundos
+    setTimeout(() => {
+        alerta.style.display = 'none';
+    }, 3000);
+}
+
+            
+
+    
+        function lancarFogos() {
+            const pai = document.getElementById('linhaDivisoria');
+            const cores = ['#ff4757', '#2ed573', '#1e90ff', '#ffa502', '#eccc68', '#ff6b81', '#78e08f'];
+            const totalParticulas = 60;
+
+            for (let i = 0; i < totalParticulas; i++) {
+                const particula = document.createElement('span');
+                particula.classList.add('particula-fogo');
+
+                const posicaoXInicial = Math.random() * pai.offsetWidth;
+                particula.style.left = `${posiacaoXInicial = Math.random() * pai.offsetWidth}px`;
+
+                const destinoX = (Math.random() - 0.5) * 250; 
+                const destinoY = -(Math.random() * 180 + 100); 
+
+                particula.style.setProperty('--x', `${destinoX}px`);
+                particula.style.setProperty('--y', `${destinoY}px`);
+                particula.style.animationDelay = `${Math.random() * 0.4}s`;
+
+                particula.style.backgroundColor = cores[Math.floor(Math.random() * cores.length)];
+                particula.style.boxShadow = `0 0 8px ${particula.style.backgroundColor}`;
+
+                pai.appendChild(particula);
+
+                setTimeout(() => {
+                    particula.remove();
+                }, 1600);
+            }
+        }
+
+        function executarSorteio(forçarSemLista = false) {
+            const totalInput = document.getElementById('totalNumeros');
+            const qtdInput = document.getElementById('qtdSortear');
+            const btnOficial = document.getElementById('btnOficial');
+
+            const total = parseInt(totalInput.value);
+            const quantidade = parseInt(qtdInput.value);
+            
+            const containerResultado = document.getElementById('resultadoContainer');
+            const espacoNumeros = document.getElementById('espacoNumeros');
+            const tituloResultado = document.getElementById('resultadoGeralTitulo');
+
+            if (isNaN(total) || isNaN(quantidade)) {
+                alert('Por favor, defina a quantidade total e quantos números deseja sortear para continuar.');
+                return;
+            }
+
+            if (total <= 0 || quantidade <= 0) {
+                alert('Os parâmetros numéricos informados devem ser maiores que zero.');
+                return;
+            }
+
+            if (quantidade > total) {
+                alert('A quantidade de números a ser sorteada não pode ser superior ao total disponível.');
+                return;
+            }
+
+            if (Object.keys(bancoParticipantes).length === 0 && !forçarSemLista) {
+                document.getElementById('modalAvisoLista').style.display = 'flex';
+                return;
+            }
+
+            lancarFogos();
+
+            btnOficial.disabled = true;
+            totalInput.disabled = true;
+            qtdInput.disabled = true;
+
+            espacoNumeros.innerHTML = '';
+            containerResultado.style.display = 'block';
+
+            tituloResultado.innerHTML = `
+    <div style="
+        display: inline-flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 4px;
+    ">
+        <span style="
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: #f59e0b; 
+            font-weight: 800;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            margin-bottom: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        ">
+            <span style="
+                width: 8px; 
+                height: 8px; 
+                background: #f59e0b; 
+                border-radius: 50%; 
+                display: inline-block;
+                animation: popIn 0.8s infinite alternate; /* Faz a bolinha pulsar */
+            "></span>
+            Processando
+        </span>
+        <span style="
+            font-size: 1.4rem; 
+            font-weight: 900; 
+            color: #0f172a; 
+            letter-spacing: -0.5px;
+        ">
+            Sorteio Oficial em Andamento...
+        </span>
+    </div>
+`;
+    
+            containerResultado.style.backgroundColor = '#f0fdf4';
+            containerResultado.style.borderColor = '#bbf7d0';
+                
+//+++
+            containerResultado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            const numerosSorteados = [];
+            while (numerosSorteados.length < quantidade) {
+                const numeroAleatorio = Math.floor(Math.random() * total) + 1;
+                if (!numerosSorteados.includes(numeroAleatorio)) {
+                    numerosSorteados.push(numeroAleatorio);
+                }
+            }
+
+            let indexAtual = 0;
+            // OTIMIZADO: Ajustado suspense de 10s para 2.5s para dinamismo
+            const tempoDeSuspense = 3000; 
+
+            function sortearProximaBola() {
+                if (indexAtual >= quantidade) {
+                    tituloResultado.innerHTML = `
+    <div style="
+        display: inline-flex; 
+        flex-direction: column; 
+        align-items: center; 
+        gap: 4px;
+        animation: popIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    ">
+        <span style="
+            font-size: 0.75rem; 
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
+            color: #22c55e; 
+            font-weight: 800;
+            background: rgba(34, 197, 94, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+            margin-bottom: 6px;
+        ">
+            Sorteio Finalizado
+        </span>
+        <span style="
+            font-size: 1.4rem; 
+            font-weight: 900; 
+            color: #0f172a; 
+            letter-spacing: -0.5px;">
+            Resultado Oficial Concluído!
+        </span>
+    </div>
+`;
+                    // Substitua o tituloResultado.scrollIntoView anterior por isto:
+setTimeout(() => {
+    tituloResultado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}, 2500); // 2000 milissegundos equivalem a exatamente 2 segundos
+
+                    btnOficial.disabled = false;
+                    totalInput.disabled = false;
+                    qtdInput.disabled = false;
+                    return;
+                }
+
+                const blocoBola = document.createElement('div');
+                blocoBola.style.display = 'flex';
+                blocoBola.style.flexDirection = 'column';
+                blocoBola.style.alignItems = 'center';
+                blocoBola.style.width = '100%';
+
+                const bola = document.createElement('div');
+                bola.classList.add('numero-bola', 'girando');
+                blocoBola.appendChild(bola);
+                espacoNumeros.appendChild(blocoBola);
+//                
+                bola.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                const intervaloGiro = setInterval(() => {
+                    bola.innerText = Math.floor(Math.random() * total) + 1;
+                }, 70);
+
+                setTimeout(() => {
+                    clearInterval(intervaloGiro); 
+                    
+                    const numeroDefinitivo = numerosSorteados[indexAtual];
+                    bola.innerText = numeroDefinitivo;
+                    bola.classList.remove('girando'); 
+
+                    const numeroDoPremio = indexAtual + 1;
+
+                    const participanteGanhador = bancoParticipantes[numeroDefinitivo] || bancoParticipantes[String(numeroDefinitivo)];
+
+                    if (participanteGanhador) {
+                        const dados = participanteGanhador;
+                        const textoMensagem = encodeURIComponent(`Olá ${dados.nome}! Você foi sorteado no Prêmio ${numeroDoPremio} com o número ${numeroDefinitivo}. Parabéns! 🎉`);
+                        const numeroLimpoWhatsApp = dados.zap.replace(/\s+/g, '');
+                        
+                        const bilhete = document.createElement('div');
+bilhete.classList.add('bilhete-ganhador');
+bilhete.style.cssText = `
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 15px;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 20px rgba(34, 197, 94, 0.1);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+`;
+
+bilhete.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <span style="background: rgba(34, 197, 94, 0.15); color: #4ade80; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; border: 1px solid rgba(34, 197, 94, 0.3);">
+            PREMIAÇÃO CONCLUÍDA
+        </span>
+        <span style="color: #94a3b8; font-size: 0.8rem; font-weight: 700;">
+            Prêmio #${numeroDoPremio}
+        </span>
+    </div>
+
+    <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 16px; text-align: center;">
+        <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 2px;">Número Sorteado</div>
+        <div style="font-size: 2rem; font-weight: 900; color: red; letter-spacing: -0.5px;">${numeroDefinitivo}</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 8px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-user-circle" style="color: #94a3b8; font-size: 1.1rem;"></i>
+            </div>
+            <div>
+                <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 700;">Ganhador</div>
+                <div style="font-size: 0.95rem; font-weight: 700; color: #f8fafc;">${dados.nome}</div>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="background: rgba(34, 197, 94, 0.1); padding: 8px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                </svg>
+            </div>
+            <div>
+                <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 700;">Contato Cadastrado</div>
+                <div style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">${dados.zap}</div>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://api.whatsapp.com/send?phone=55${numeroLimpoWhatsApp}&text=${textoMensagem}" target="_blank" style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: #22c55e;
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 14px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(34, 197, 94, 0.3);
+        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    " onmouseover="this.style.background='#16a34a'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='#22c55e'; this.style.transform='translateY(0)';">
+        <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i>
+        Notificar Ganhador
+    </a>
+`;
+
+                        blocoBola.appendChild(bilhete);
+} else {
+    const bilheteAnonimo = document.createElement('div');
+    bilheteAnonimo.classList.add('bilhete-ganhador');
+    bilheteAnonimo.style.cssText = `
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 16px;
+        padding: 20px;
+        margin-top: 15px;
+        width: 100%;
+        max-width: 320px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Inter', sans-serif;
+    `;
+
+    bilheteAnonimo.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <span style="background: rgba(148, 163, 184, 0.1); color: #94a3b8; font-size: 0.75rem; font-weight: 800; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; border: 1px solid rgba(148, 163, 184, 0.2);">
+                SEM LISTA CADASTRADA
+            </span>
+            <span style="color: #94a3b8; font-size: 0.8rem; font-weight: 700;">
+                Prêmio #${numeroDoPremio}
+            </span>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.03); border-radius: 12px; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.05); margin-bottom: 16px; text-align: center;">
+            <div style="font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 2px;">Número Sorteado</div>
+            <div style="font-size: 2rem; font-weight: 900; color: #ffffff; letter-spacing: -0.5px;">${numeroDefinitivo}</div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 8px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fas fa-user-secret" style="color: #64748b; font-size: 1.1rem;"></i>
+                </div>
+                <div>
+                    <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 700;">Ganhador</div>
+                    <div style="font-size: 0.95rem; font-weight: 700; color: #94a3b8;">Ganhador Anônimo</div>
+                </div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <div style="background: rgba(239, 68, 68, 0.1); padding: 8px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                    </svg>
+                </div>
+                <div>
+                    <div style="font-size: 0.7rem; color: #64748b; text-transform: uppercase; font-weight: 700;">Contato Cadastrado</div>
+                    <div style="font-size: 0.9rem; font-weight: 600; color: #ef4444;">Não Cadastrado</div>
+                </div>
+            </div>
+        </div>
+
+        <button disabled style="
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #334155;
+            color: #94a3b8;
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: 100%;
+            cursor: not-allowed;
+            opacity: 0.6;
+        ">
+            <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i>
+            WhatsApp Indisponível
+        </button>
+    `;
+    blocoBola.appendChild(bilheteAnonimo);
+}
+
+
+                    lancarFogos();
+//+++
+                    blocoBola.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                    indexAtual++;
+                    sortearProximaBola(); 
+                }, tempoDeSuspense);
+            }
+
+            sortearProximaBola();
+        }
+    </script>
+</body>
+</html>
