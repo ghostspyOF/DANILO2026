@@ -1026,7 +1026,8 @@ window.quantidadeNumerosSorteio = 1000; // Valor padrão de segurança
 window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso a planilha falhe
 
 (function() {
-    const CONFIG_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBdaYxM5mhbbejiQkscqj46buinbkbLLwDXEqJn7mBc1D1kLD-5dST5Xvb9w4cTmuGE0t03fTzkFfe/pub?output=csv";
+    //PEGA AS INFORMAÇÕES DA PLANILHA QUE EDITA O SITE
+    const CONFIG_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRUrlw7y4cFWaXVYDzES6Eibs3fMhL7b2IBja4nEFXys40WNtAvt1R5rXCQTCYT1Tzwj-toUYSoUvtC/pub?output=csv";
 
     async function atualizarSite() {
         try {
@@ -1166,7 +1167,7 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
             "340.00": "32865511120", "360.00": "32865511120", "380.00": "32865511120", "400.00": "32865511120"
         };
 
-        const SPREADSHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSoBAhPS9a75KBxRp6EVhp1a9uIvUBBQOGQPjBaXXZpJlTGFPFiboJIt3C0gRkcdJBHtuqKByafvTHl/pub?output=csv";
+        const SPREADSHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGNnX2CNboGVogFtJhwq17hgCBbxkcOImJi9CMtxqKHrlH7M9QCjYCbeTh6wvLK4-YopHFiWr7GraH/pub?output=csv";
 
         // Elementos da interface
         const gridNumeros = document.getElementById('gridNumeros');
