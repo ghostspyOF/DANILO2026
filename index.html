@@ -1104,6 +1104,13 @@ if (idElemento === "CONFIG_WHATSAPP_RECEBER") {
     console.log(`Sucesso: WhatsApp definido para: ${window.whatsappPlanilha}`);
     return;
 }
+// --- CONFIGURAÇÃO: LINKS DE PAGAMENTO DINÂMICOS ---
+if (idElemento.startsWith("LINK_")) {
+    const valorChave = idElemento.replace("LINK_", ""); // Extrai o valor (ex: "15.00")
+    window.linksPagamentoPlanilha[valorChave] = conteudo;
+    console.log(`Sucesso: Link para R$ ${valorChave} cadastrado: ${conteudo}`);
+    return;
+}
 
                     // --- ATUALIZAÇÃO DOS ELEMENTOS DO HTML ---
                     const elemento = document.getElementById(idElemento);
@@ -1179,14 +1186,11 @@ if (idElemento === "CONFIG_WHATSAPP_RECEBER") {
 
         let numerosVendidosPlanilha = [];
 
-        // LINKS DE PAGAMENTO
-        const LINKS_PAGAMENTO = {
-            "15.00": "62981147479", "30.00": "62981147479", "45.00": "62981147479", "60.00": "62981147479",
-            "75.00": "62981147479", "90.00": "62981147479", "105.00": "62981147479", "120.00": "62981147479",
-            "135.00": "62981147479", "150.00": "62981147479", "165.00": "62981147479", "180.00": "62981147479",
-            "195.00": "62981147479", "210.00": "62981147479", "225.00": "62981147479", "240.00": "62981147479",
-            "255.00": "62981147479", "270.00": "62981147479", "285.00": "62981147479", "300.00": "62981147479"
-        };
+        //❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎ LINKS DE PAGAMENTO
+        // Os links serão preenchidos dinamicamente pela planilha
+window.linksPagamentoPlanilha = {};
+        // Os links serão preenchidos dinamicamente pela planilha
+        //❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎❎ LINKS DE PAGAMENTO
 
         const SPREADSHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGNnX2CNboGVogFtJhwq17hgCBbxkcOImJi9CMtxqKHrlH7M9QCjYCbeTh6wvLK4-YopHFiWr7GraH/pub?output=csv";
 
@@ -1424,40 +1428,42 @@ if (idElemento === "CONFIG_WHATSAPP_RECEBER") {
         btnVoltar.addEventListener('click', () => modalConfirmacao.style.display = 'none');
         
         btnPagar.addEventListener('click', function() {
-            const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
-            const total = numerosSelecionados.length * valorPorNumero;
-            
-            const dadosSalvos = JSON.parse(localStorage.getItem('rifa_dados_comprador'));
-            const nomeComprador = dadosSalvos ? dadosSalvos.nome : "Não informado";
-            const whatsComprador = dadosSalvos ? dadosSalvos.whatsapp : "Não informado";
-            const linkPagamentoExato = LINKS_PAGAMENTO[total.toFixed(2)] || window.chavePixPlanilha;
-                
-            let textoWhatsapp = `Administração: Desde agora nós organizadores agradece a sua participação\n\n`;
-            textoWhatsapp += `👤 *Nome:* ${nomeComprador}\n`;
-            textoWhatsapp += `📱 *WhatsApp:* ${whatsComprador}\n\n`;
-            textoWhatsapp += `🔢 *Números Escolhidos:* ${numerosSelecionados.join(', ')}\n`;
-            textoWhatsapp += `💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-            textoWhatsapp += `🔗 *Pix para Pagamento:* ${linkPagamentoExato}\n\n`;
-            textoWhatsapp += `🔻🔻🔻🔻🔻🔻🔻🔻🔻\n\n`;
-            textoWhatsapp += `Por favor, nos enviar o comprovante aqui mesmo para validar seus números!\n\n`;
-            textoWhatsapp += `____________________________\n\n`;
-            textoWhatsapp += `*CLICA EM ENVIAR MENSAGEM AUTOMATICA*\n\n`;
-            textoWhatsapp += `👉👉👉👉👉👉\n\n`;
-
-            // 🌟 PEGA O NÚMERO EXCLUSIVO DO WHATSAPP DA PLANILHA:
-            // Usa o número da planilha. Se estiver vazio, usa o número antigo como segurança.
-            const numeroWhatsBruto = window.whatsappPlanilha || "5562995679219";
-            
-            // Limpa espaços, traços ou parênteses
-            const numeroWhatsPlanilha = numeroWhatsBruto.replace(/\D/g, ''); 
-            
-            // Garante o "55" do Brasil na frente do número
-            const numeroWhatsFinal = numeroWhatsPlanilha.startsWith('55') ? numeroWhatsPlanilha : '55' + numeroWhatsPlanilha;
+    const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
+    const total = numerosSelecionados.length * valorPorNumero;
+    const valorChave = total.toFixed(2);
+    
+    // Busca o link na memória carregada da planilha
+    const linkPagamentoExato = window.linksPagamentoPlanilha[valorChave];
         
-            // Abre o WhatsApp com o número configurado na linha do "CONFIG_WHATSAPP_RECEBER"
-            window.open(`https://api.whatsapp.com/send?phone=${numeroWhatsFinal}&text=${encodeURIComponent(textoWhatsapp)}`, '_blank');
-            modalConfirmacao.style.display = 'none';
-        });
+    // SE NÃO EXISTIR O LINK PARA ESSE VALOR NA PLANILHA:
+    if (!linkPagamentoExato || linkPagamentoExato.trim() === "") {
+        alert("Link de pagamento não cadastrado para esse valor. Desculpe!!!");
+        return; // Para a execução e não abre o WhatsApp
+    }
+        
+    const dadosSalvos = JSON.parse(localStorage.getItem('rifa_dados_comprador'));
+    const nomeComprador = dadosSalvos ? dadosSalvos.nome : "Não informado";
+    const whatsComprador = dadosSalvos ? dadosSalvos.whatsapp : "Não informado";
+        
+    let textoWhatsapp = `Administração: Desde agora nós organizadores agradece a sua participação\n\n`;
+    textoWhatsapp += `👤 *Nome:* ${nomeComprador}\n`;
+    textoWhatsapp += `📱 *WhatsApp:* ${whatsComprador}\n\n`;
+    textoWhatsapp += `🔢 *Números Escolhidos:* ${numerosSelecionados.join(', ')}\n`;
+    textoWhatsapp += `💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
+    textoWhatsapp += `🔗 *Link para Pagamento: * ${linkPagamentoExato}\n\n`;
+    textoWhatsapp += `🔻🔻🔻🔻🔻🔻🔻🔻🔻\n\n`;
+    textoWhatsapp += `Por favor, nos enviar o comprovante aqui mesmo para validar seus números!\n\n`;
+    textoWhatsapp += `____________________________\n\n`;
+    textoWhatsapp += `*CLICA EM ENVIAR MENSAGEM AUTOMATICA*\n\n`;
+    textoWhatsapp += `👉👉👉👉👉👉\n\n`;
+
+    const numeroWhatsBruto = window.whatsappPlanilha || "5562995679219";
+    const numeroWhatsPlanilha = numeroWhatsBruto.replace(/\D/g, ''); 
+    const numeroWhatsFinal = numeroWhatsPlanilha.startsWith('55') ? numeroWhatsPlanilha : '55' + numeroWhatsPlanilha;
+
+    window.open(`https://api.whatsapp.com/send?phone=${numeroWhatsFinal}&text=${encodeURIComponent(textoWhatsapp)}`, '_blank');
+    modalConfirmacao.style.display = 'none';
+});
         
         carregarDadosDaPlanilha();
         setInterval(carregarDadosDaPlanilha, 30000);
