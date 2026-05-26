@@ -754,63 +754,40 @@
         }
 
         
-       // 🟢 NOVA FUNÇÃO ADICIONADA: ENVIO DO WHATSAPP PARA A LINHA 1 DA PLANILHA
+       // 🟢 FUNÇÃO CORRIGIDA: ENVIO DO WHATSAPP PARA A PLANILHA
         function executarAcaoLinkDinamico() {
-    const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
-    const linkDestino = document.getElementById('inputUrlLink').value.trim();
-    
-    // Controle automático da linha: começa na 29 se for a primeira vez
-    let linhaPlanilha = localStorage.getItem('proximaLinhaLink');
-    if (!linhaPlanilha) {
-        linhaPlanilha = 29;
-    } else {
-        linhaPlanilha = parseInt(linhaPlanilha);
-    }
-    
-    // Monta exatamente o texto que você quer (ex: "LINK_15.00")
-    const identificadorLink = "LINK_" + valorDigitado;
-    
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-    
-    let formData = new FormData();
-    formData.append("entry.1725042433", linkDestino);       // Vai para a coluna do Link
-    formData.append("entry.718294531", linhaPlanilha);     // Força ir para a linha 29, depois 30, etc.
-    formData.append("entry.790821356", identificadorLink);  // Envia "LINK_15.00" para a sua coluna A
+            const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
+            const linkDestino = document.getElementById('inputUrlLink').value.trim();
+            
+            // Controle automático da linha: começa na 29 se for a primeira vez
+            let linhaPlanilha = localStorage.getItem('proximaLinhaLink');
+            if (!linhaPlanilha) {
+                linhaPlanilha = 29;
+            } else {
+                linhaPlanilha = parseInt(linhaPlanilha);
+            }
+            
+            // Monta exatamente o texto que você quer (ex: "LINK_15.00")
+            const identificadorLink = "LINK_" + valorDigitado;
+            
+            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
+            
+            let formData = new FormData();
+            formData.append("entry.1725042433", linkDestino);       // Vai para a coluna do Link
+            formData.append("entry.718294531", linhaPlanilha);     // Força ir para a linha 29, depois 30, etc.
+            formData.append("entry.790821356", identificadorLink);  // Envia "LINK_15.00" para a sua coluna A
 
-    fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-    
-    alert("Sucesso! O texto '" + identificadorLink + "' foi enviado para a linha " + linhaPlanilha);
-    
-    // Salva a próxima linha (ex: 30) para o próximo link que você criar
-    localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
-    
-    // Limpa os campos
-    document.getElementById('inputNumeroLink').value = '';
-    document.getElementById('inputUrlLink').value = '';
-}
-
-    
-    // Monta exatamente o texto que você quer (ex: "LINK_15.00")
-    const identificadorLink = "LINK_" + valorDigitado;
-    
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-    
-    let formData = new FormData();
-    formData.append("entry.1725042433", linkDestino);       // Vai para a coluna do Link (já convertido se for Whats)
-    formData.append("entry.718294531", linhaPlanilha);     // Força ir para a linha 29, depois 30, etc.
-    formData.append("entry.790821356", identificadorLink);  // Envia "LINK_15.00" para a sua coluna A
-
-    fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-    
-    alert("Sucesso! O texto '" + identificadorLink + "' foi enviado para a linha " + linhaPlanilha);
-    
-    // Salva a próxima linha (ex: 30) para o próximo link que você criar
-    localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
-    
-    // Limpa os campos
-    document.getElementById('inputNumeroLink').value = '';
-    document.getElementById('inputUrlLink').value = '';
-}
+            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
+            
+            alert("Sucesso! O texto '" + identificadorLink + "' foi enviado para a linha " + linhaPlanilha);
+            
+            // Salva a próxima linha (ex: 30) para o próximo link que você criar
+            localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
+            
+            // Limpa os campos
+            document.getElementById('inputNumeroLink').value = '';
+            document.getElementById('inputUrlLink').value = '';
+        }
 
         
         function executarAcaoQuantidade2() {
