@@ -361,21 +361,15 @@
             <button type="submit" class="selector-btn" style="width: 100%; background-color: #8b5cf6; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#7c3aed'" onmouseout="this.style.backgroundColor='#8b5cf6'">Vincular Chave PIX</button>
         </form>
 
-        <form onsubmit="event.preventDefault(); executarAcaoWhatsapp();" class="prizes-container prize-card" style="font-family: 'Segoe UI', sans-serif; background-color: #ffffff; padding: 24px; border-radius: 12px; border-top: 4px solid #25D366; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); max-width: 360px; margin: 15px auto;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                <p style="margin: 0; font-size: 13px; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;">WHATSAPP DO SORTEIO</p>
-            </div>    
-            <input type="text" id="inputWhatsapp" placeholder="Ex: 62999999999" required style="width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
-            <button type="submit" class="selector-btn" style="width: 100%; background-color: #25D366; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#128C7E'" onmouseout="this.style.backgroundColor='#25D366'">Vincular WhatsApp</button>
-        </form>
-
         <form onsubmit="event.preventDefault(); executarAcaoLinkDinamico();" class="prizes-container prize-card" style="font-family: 'Segoe UI', sans-serif; background-color: #ffffff; padding: 24px; border-radius: 12px; border-top: 4px solid #bfa071; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); max-width: 360px; margin: 15px auto;">
             <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#bfa071" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-                <p style="margin: 0; font-size: 13px; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;">CADASTRAR NOVO LINK (ID AUTO)</p>
+                <p style="margin: 0; font-size: 13px; font-weight: 700; color: #1e293b; text-transform: uppercase; letter-spacing: 0.5px;">VINCULAR LINK POR NÚMERO</p>
             </div>    
-            <input type="url" id="inputUrlLink" placeholder="Cole o link do FormResponse aqui" required style="width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
+            <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+                <span style="align-self: center; font-weight: bold; color: #64748b; font-size: 14px;">LINK_</span>
+                <input type="text" id="inputUrlLink" placeholder="Cole o link ou digite o WhatsApp aqui" required style="width: 100%; padding: 12px; margin-bottom: 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;"> </div>
+             <input type="text" id="inputNumeroLink" placeholder="15.00" required oninput="this.value = this.value.replace(/[^0-9.]/g, '');" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; box-sizing: border-box;">
             <button type="submit" class="selector-btn" style="width: 100%; background-color: #bfa071; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#a38558'" onmouseout="this.style.backgroundColor='#bfa071'">Salvar Link</button>
         </form>
         <!-- ⬆⬆⬆❎❎❎❎⬆⬆⬆⬆ -->
@@ -771,38 +765,52 @@
             fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
             alert("Enviado com sucesso!");
         }
-        // 🔵 FUNÇÃO COM CONTADOR AUTOMÁTICO: INICIA NO ID 29 e INCREMENTA
-        function executarAcaoLinkDinamico() {
-            const linkDestino = document.getElementById('inputUrlLink').value.trim();
-            
-            // Busca o último ID salvo no navegador. Se não existir, começa no 29
-            let idAtual = localStorage.getItem('ultimoIdLink');
-            if (!idAtual) {
-                idAtual = 29;
-            } else {
-                idAtual = parseInt(idAtual);
-            }
-            
-            // Formata o texto da ação (ex: LINK_29, LINK_30...)
-            const identificadorLink = "LINK_" + idAtual;
-            
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-            
-            let formData = new FormData();
-            formData.append("entry.1725042433", linkDestino); 
-            formData.append("entry.718294531", idAtual);             // Envia o ID numérico (29, 30, 31...)
-            formData.append("entry.790821356", identificadorLink);    // Envia o texto "LINK_29"
 
-            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-            
-            alert("Sucesso! Link enviado para o ID " + idAtual + " (" + identificadorLink + ")");
-            
-            // Salva o próximo ID (idAtual + 1) para o próximo clique
-            localStorage.setItem('ultimoIdLink', idAtual + 1);
-            
-            // Limpa o campo de texto
-            document.getElementById('inputUrlLink').value = '';
+        function executarAcaoLinkDinamico() {
+    const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
+    let linkDestino = document.getElementById('inputUrlLink').value.trim();
+    
+    // 🔥 SEGREDO DO WHATSAPP: Se o usuário digitou apenas números, transforma em link do Whats
+    // Remove parênteses, traços e espaços para testar se é só número
+    const apenasNumeros = linkDestino.replace(/\D/g, ''); 
+    if (apenasNumeros.length >= 10 && apenasNumeros.length <= 15) {
+        // Se não tiver o código do país (55), adiciona automaticamente
+        if (apenasNumeros.length === 11 || apenasNumeros.length === 10) {
+            linkDestino = "https://wa.me/55" + apenasNumeros;
+        } else {
+            linkDestino = "https://wa.me/" + apenasNumeros;
         }
+    }
+
+    // Controle automático da linha: começa na 29 se for a primeira vez
+    let linhaPlanilha = localStorage.getItem('proximaLinhaLink');
+    if (!linhaPlanilha) {
+        linhaPlanilha = 29;
+    } else {
+        linhaPlanilha = parseInt(linhaPlanilha);
+    }
+    
+    // Monta exatamente o texto que você quer (ex: "LINK_15.00")
+    const identificadorLink = "LINK_" + valorDigitado;
+    
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
+    
+    let formData = new FormData();
+    formData.append("entry.1725042433", linkDestino);       // Vai para a coluna do Link (já convertido se for Whats)
+    formData.append("entry.718294531", linhaPlanilha);     // Força ir para a linha 29, depois 30, etc.
+    formData.append("entry.790821356", identificadorLink);  // Envia "LINK_15.00" para a sua coluna A
+
+    fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
+    
+    alert("Sucesso! O texto '" + identificadorLink + "' foi enviado para a linha " + linhaPlanilha);
+    
+    // Salva a próxima linha (ex: 30) para o próximo link que você criar
+    localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
+    
+    // Limpa os campos
+    document.getElementById('inputNumeroLink').value = '';
+    document.getElementById('inputUrlLink').value = '';
+}
 
         function executarAcaoQuantidade2() {
             const valor = document.getElementById('inputQuantidade2').value;
