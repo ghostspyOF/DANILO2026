@@ -341,6 +341,7 @@
         </div>
      </div>
 
+    <!-- ⬇⬇⬇💻💻💻💻 ⬇⬇⬇-->
     <div class="prizes-container">
         <div class="prize-card full-width">
             <div><span class="prize-tag edit-target">3º PRÊMIO</span><button class="edit-btn" onclick="openEditModal(this, 'text', '-23')"></button></div><br>
@@ -348,6 +349,15 @@
             <div class="editable-wrapper full-width"><img src="" class="edit-target" alt="Notas"><button class="edit-btn" onclick="openEditModal(this, 'image', '-25')"></button></div>
        </div>
     </div>
+    <!-- ⬆⬆💻💻💻💻⬆⬆⬆ -->
+
+    <div class="prizes-container">
+        <div class="prize-card full-width">
+            <div><span class="prize-tag edit-target">4º PRÊMIO</span><button class="edit-btn" onclick="openEditModal(this, 'text', '-26')"></button></div><br>
+            <div class="editable-wrapper" style="margin: 10px 0;"><p class="prize-value edit-target">Nome do Prêmio</p><button class="edit-btn" onclick="openEditModal(this, 'text', '-27')"></button></div>
+            <div class="editable-wrapper full-width"><img src="" class="edit-target" alt="Notas"><button class="edit-btn" onclick="openEditModal(this, 'image', '-28')"></button></div>
+      </div>
+   </div>
 
     <form onsubmit="event.preventDefault(); executarAcaoQuantidade();" class="prizes-container prize-card" style="font-family: 'Segoe UI', sans-serif; background-color: #ffffff; padding: 24px; border-radius: 12px; border-top: 4px solid #3b82f6; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05); max-width: 360px; margin: 15px auto;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
@@ -555,7 +565,7 @@
         <button type="button" onclick="closeModal('-13')" style="width: 100%; padding: 12px; margin-top:8px; background-color: #f1f5f9; border: none; border-radius: 8px;">Cancelar</button>
     </form>
 </div>
-    <!-- ⬇⬇⬇⬇⬇ -->
+    <!-- ⬇⬇💻💻💻💻⬇⬇⬇ -->
     <div class="modal-overlay" id="editModal-23">
     <form onsubmit="event.preventDefault(); executarAcao();" class="modal-box">
         <h3>Editar Etiqueta 3º Prêmio</h3><br>
@@ -589,7 +599,41 @@
         <button type="button" onclick="closeModal('-25')" style="width: 100%; padding: 12px; margin-top:8px; background-color: #f1f5f9; border: none; border-radius: 8px;">Cancelar</button>
     </form>
 </div>
-    <!-- ⬆⬆⬆⬆⬆ -->
+    <!-- ⬆⬆💻💻💻💻⬆⬆⬆ -->
+
+    <div class="modal-overlay" id="editModal-26">
+    <form onsubmit="event.preventDefault(); executarAcao();" class="modal-box">
+        <h3>Editar Etiqueta 4º Prêmio</h3><br>
+        <input type="text" id="modalInput-26" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;"><br><br>
+        <input type="hidden" id="modalInput-2-26" value="26">
+        <button type="button" id="selEditar-26" onclick="setMode('editar', '-26')" style="display:none;"></button>
+        <button type="submit" class="btn-confirmar">CONFIRMAR ALTERAÇÃO</button>
+        <button type="button" onclick="closeModal('-26')" style="width: 100%; padding: 12px; margin-top:8px; background-color: #f1f5f9; border: none; border-radius: 8px;">Cancelar</button>
+    </form>
+</div>
+
+<div class="modal-overlay" id="editModal-27">
+    <form onsubmit="event.preventDefault(); executarAcao();" class="modal-box">
+        <h3>EDITAR NOME DO 4º PRÊMIO</h3><br>
+        <input type="text" id="modalInput-27" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;"><br><br>
+        <input type="hidden" id="modalInput-2-27" value="27">
+        <button type="button" id="selEditar-27" onclick="setMode('editar', '-27')" style="display:none;"></button>
+        <button type="submit" class="btn-confirmar">CONFIRMAR ALTERAÇÃO</button>
+        <button type="button" onclick="closeModal('-27')" style="width: 100%; padding: 12px; margin-top:8px; background-color: #f1f5f9; border: none; border-radius: 8px;">Cancelar</button>
+    </form>
+</div>
+
+<div class="modal-overlay" id="editModal-28">
+    <form onsubmit="event.preventDefault(); executarAcao();" class="modal-box">
+        <h3>Editar Imagem 4º Prêmio</h3><br>
+        <input type="url" id="modalInput-28" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;"><br><br>
+        <input type="hidden" id="modalInput-2-28" value="28">
+        <button type="button" id="selEditar-28" onclick="setMode('editar', '-28')" style="display:none;"></button>
+        <div style="margin-bottom: 15px;"><a href="Hospedagem-img.html" style="text-decoration: none;"><button type="button" style="width:100%; padding:10px; background:#1f2937; color:#fff; border:none; border-radius:8px;">Pegar Link na Galeria</button></a></div>
+        <button type="submit" class="btn-confirmar">CONFIRMAR ALTERAÇÃO</button>
+        <button type="button" onclick="closeModal('-28')" style="width: 100%; padding: 12px; margin-top:8px; background-color: #f1f5f9; border: none; border-radius: 8px;">Cancelar</button>
+    </form>
+</div>
 
 <div class="modal-overlay" id="editModal-14">
     <form onsubmit="event.preventDefault(); executarAcao();" class="modal-box">
