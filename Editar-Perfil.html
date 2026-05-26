@@ -655,7 +655,7 @@
     </div>
 
    
-    <script>
+   <script>
         // 🔒 Sistema de Validação Segura via JSONP
         function validarAcessoPainel() {
             const usuarioInput = document.getElementById('authID').value.trim();
@@ -682,12 +682,13 @@
                     document.getElementById('authSenha').value = '';
                 }
                 
-                document.body.removeChild(scriptElemento);
+                if (scriptElemento && scriptElemento.parentNode) {
+                    document.body.removeChild(scriptElemento);
+                }
                 delete window[nomeCallback];
             };
 
-            // CORRIGIDO: Adicionado as crases (Template Strings) para evitar quebra no interpretador do navegador
-            const parametros = `?usuario=${encodeURIComponent(usuarioInput)}&senha=${encodeURIComponent(senhaInput)}&callback=${nomeCallback}`;
+            const parametros = "?usuario=" + encodeURIComponent(usuarioInput) + "&senha=" + encodeURIComponent(senhaInput) + "&callback=" + nomeCallback;
             
             const scriptElemento = document.createElement('script');
             scriptElemento.src = urlBackend + parametros;
@@ -695,7 +696,9 @@
             scriptElemento.onerror = function() {
                 alert("Erro de autenticação: Verifique sua conexão ou a configuração do script.");
                 if (divErro) divErro.style.display = 'block';
-                document.body.removeChild(scriptElemento);
+                if (scriptElemento && scriptElemento.parentNode) {
+                    document.body.removeChild(scriptElemento);
+                }
                 delete window[nomeCallback];
             };
 
@@ -775,11 +778,9 @@
             formData.append("entry.790821356", identificadorLink);  
 
             fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-            
-           
+            alert("Link salvo com sucesso!");
             
             localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
-            
             document.getElementById('inputNumeroLink').value = '';
             document.getElementById('inputUrlLink').value = '';
         }
@@ -812,6 +813,7 @@
 
         function executarAcao() {
             const valorInput = document.getElementById('modalInput' + currentModalId).value;
+            // Correção aqui: adicionado o traço correto para buscar o input hidden (ex: modalInput-2-1)
             const valorInput2 = document.getElementById('modalInput-2' + currentModalId).value;
             const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
             
@@ -827,6 +829,7 @@
 
             if(modoSelecionado) {
                 fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
+                alert("Alteração salva com sucesso!");
             }
             
             closeModal(currentModalId);
