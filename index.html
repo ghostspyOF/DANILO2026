@@ -1083,12 +1083,13 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
                     }
 
                     // --- CONFIGURAÇÃO: VALOR POR NÚMERO ---
-                    if (idElemento === "CONFIG_VALOR_NUMERO") {
-                        const valorLimpo = conteudo.replace(',', '.');
-                        valorPorNumero = parseFloat(valorLimpo) || 'CARREGANDO';
-                        console.log(`Sucesso: Valor por número definido para: R$ ${valorPorNumero}`);
-                        return;
-                    }
+if (idElemento === "CONFIG_VALOR_NUMERO") {
+    const valorLimpo = conteudo.replace(',', '.');
+    // Armazena o número puro. Se não for um número válido, vira 0
+    window.valorPorNumero = parseFloat(valorLimpo) || 0; 
+    console.log(`Sucesso: Valor por número definido para: R$ ${window.valorPorNumero}`);
+    return;
+}
 
                     // --- CONFIGURAÇÃO: CHAVE PIX ---
 if (idElemento === "CONFIG_CHAVE_PIX") {
@@ -1173,7 +1174,7 @@ if (idElemento === "CONFIG_WHATSAPP_RECEBER") {
         let reservasAdmin = JSON.parse(localStorage.getItem('rifa_reservas_admin')) || {};
         let modoAdminAtivo = false;
 
-        window.valorPorNumero = 20.00;
+        window.valorPorNumero = 0;
         let numeroSendoEditado = null;
 
         let numerosVendidosPlanilha = [];
@@ -1220,12 +1221,19 @@ if (idElemento === "CONFIG_WHATSAPP_RECEBER") {
         const modalFlutuante = document.getElementById('modalFlutuante');
         const btnFlutuante = document.getElementById('btnFlutuante');
 
-                function verificarExibicaoFlutuante() {
+        function verificarExibicaoFlutuante() {
             const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
             if (numerosSelecionados.length > 0) {
                 // Preenche os dados nos elementos do modal flutuante
                 document.getElementById('modalNumeros-2').innerText = numerosSelecionados.join(', ');
-                document.getElementById('modalTotal-2').innerText = `Total: R$ ${(numerosSelecionados.length * valorPorNumero).toFixed(2).replace('.', ',')}`;
+                
+                // 🌟 LÓGICA INTELIGENTE DO TEXTO DE CARREGAMENTO:
+                if (!window.valorPorNumero || window.valorPorNumero === 0) {
+                    document.getElementById('modalTotal-2').innerText = `Total: CARREGANDO...`;
+                } else {
+                    document.getElementById('modalTotal-2').innerText = `Total: R$ ${(numerosSelecionados.length * window.valorPorNumero).toFixed(2).replace('.', ',')}`;
+                }
+                
                 modalFlutuante.style.display = 'block';
             } else {
                 modalFlutuante.style.display = 'none';
