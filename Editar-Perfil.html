@@ -753,88 +753,77 @@
             alert("Enviado com sucesso!");
         }
 
-        // 🟢 NOVA FUNÇÃO ADICIONADA: ENVIO DO WHATSAPP PARA A LINHA 1 DA PLANILHA
-        function executarAcaoLinkDinamico() {
-    const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
-    const linkDestino = document.getElementById('inputUrlLink').value.trim();
-    
-    // Controle automático da linha: começa na 29 se for a primeira vez
-    let linhaPlanilha = localStorage.getItem('proximaLinhaLink');
-    if (!linhaPlanilha) {
-        linhaPlanilha = 29;
-    } else {
-        linhaPlanilha = parseInt(linhaPlanilha);
-    }
-    
-    // Monta exatamente o texto que você quer (ex: "LINK_15.00")
-    const identificadorLink = "LINK_" + valorDigitado;
-    
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-    
-    let formData = new FormData();
-    formData.append("entry.1725042433", linkDestino);       // Vai para a coluna do Link
-    formData.append("entry.718294531", linhaPlanilha);     // Força ir para a linha 29, depois 30, etc.
-    formData.append("entry.790821356", identificadorLink);  // Envia "LINK_15.00" para a sua coluna A
-
-    fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-    
-   // Remove qualquer alerta anterior para não acumular na tela
-const alertaAntigo = document.getElementById('custom-alert');
-if (alertaAntigo) alertaAntigo.remove();
-
-// Cria a estrutura do novo alerta estilizado
-// Remove qualquer alerta anterior para não acumular na tela
-const alertaAntigo = document.getElementById('custom-alert');
-if (alertaAntigo) alertaAntigo.remove();
-
-// Cria a estrutura do novo alerta estilizado
-const alertaHTML = `
-    <div id="custom-alert" style="position: fixed; top: 20px; right: 20px; background-color: #ffffff; border-left: 4px solid #bfa071; box-shadow: 0 10px 25px rgba(0,0,0,0.15); padding: 16px 20px; border-radius: 8px; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; gap: 12px; z-index: 9999; animation: slideIn 0.3s ease-out;">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#bfa071" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        <div>
-            <h4 style="margin: 0; color: #1e293b; font-size: 14px; font-weight: 700;">Sucesso!</h4>
-            <p style="margin: 4px 0 0 0; color: #64748b; font-size: 13px;">O texto <b>${identificadorLink}</b> foi enviado para a linha <b>${linhaPlanilha}</b>.</p>
-        </div>
-    </div>
-    <style>
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; }
-        }
-    </style>
-`;
-
-// Adiciona o alerta na página
-document.body.insertAdjacentHTML('beforeend', alertaHTML);
-
-// Remove o alerta automaticamente após 4 segundos com um efeito suave
-setTimeout(() => {
-    const alerta = document.getElementById('custom-alert');
-    if (alerta) {
-        alerta.style.animation = 'fadeOut 0.5s ease-out forwards';
-        setTimeout(() => alerta.remove(), 500);
-    }
-}, 4000);
-    
-    // Salva a próxima linha (ex: 30) para o próximo link que você criar
-    localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
-    
-    // Limpa os campos
-    document.getElementById('inputNumeroLink').value = '';
-    document.getElementById('inputUrlLink').value = '';
-}
         
-    // Controle automático da linha: começa na 29 se for a primeira vez
-    let linhaPlanilha = localStorage.getItem('proximaLinhaLink');
-    if (!linhaPlanilha) {
-        linhaPlanilha = 29;
-    } else {
-        linhaPlanilha = parseInt(linhaPlanilha);
-    }
+       // 🟢 NOVA FUNÇÃO ADICIONADA: ENVIO DO WHATSAPP PARA A LINHA 1 DA PLANILHA
+        function executarAcaoLinkDinamico() {
+            const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
+            const linkDestino = document.getElementById('inputUrlLink').value.trim();
+            
+            // Controle automático da linha: começa na 29 se for a primeira vez
+            let linhaPlanilha = localStorage.getItem('proximaLinhaLink');
+            if (!linhaPlanilha) {
+                linhaPlanilha = 29;
+            } else {
+                linhaPlanilha = parseInt(linhaPlanilha);
+            }
+            
+            // Monta exatamente o texto que você quer (ex: "LINK_15.00")
+            const identificadorLink = "LINK_" + valorDigitado;
+            
+            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
+            
+            let formData = new FormData();
+            formData.append("entry.1725042433", linkDestino);       // Vai para a coluna do Link
+            formData.append("entry.718294531", linhaPlanilha);     // Força ir para a linha 29, depois 30, etc.
+            formData.append("entry.790821356", identificadorLink);  // Envia "LINK_15.00" para a sua coluna A
+
+            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
+            
+            // Remove qualquer alerta anterior para não acumular na tela
+            const alertaAntigo = document.getElementById('custom-alert');
+            if (alertaAntigo) alertaAntigo.remove();
+
+            // Cria a estrutura do novo alerta estilizado
+            const alertaHTML = `
+                <div id="custom-alert" style="position: fixed; top: 20px; right: 20px; background-color: #ffffff; border-left: 4px solid #bfa071; box-shadow: 0 10px 25px rgba(0,0,0,0.15); padding: 16px 20px; border-radius: 8px; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; gap: 12px; z-index: 9999; animation: slideIn 0.3s ease-out;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#bfa071" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    <div>
+                        <h4 style="margin: 0; color: #1e293b; font-size: 14px; font-weight: 700;">Sucesso!</h4>
+                        <p style="margin: 4px 0 0 0; color: #64748b; font-size: 13px;">O texto <b>\${identificadorLink}</b> foi enviado para a linha <b>\${linhaPlanilha}</b>.</p>
+                    </div>
+                </div>
+                <style>
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes fadeOut {
+                        from { opacity: 1; }
+                        to { opacity: 0; }
+                    }
+                </style>
+            `;
+
+            // Adiciona o alerta na página
+            document.body.insertAdjacentHTML('beforeend', alertaHTML);
+
+            // Remove o alerta automaticamente após 4 segundos com um efeito suave
+            setTimeout(() => {
+                const alerta = document.getElementById('custom-alert');
+                if (alerta) {
+                    alerta.style.animation = 'fadeOut 0.5s ease-out forwards';
+                    setTimeout(() => alerta.remove(), 500);
+                }
+            }, 4000);
+            
+            // Salva a próxima linha (ex: 30) para o próximo link que você criar
+            localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
+            
+            // Limpa os campos
+            document.getElementById('inputNumeroLink').value = '';
+            document.getElementById('inputUrlLink').value = '';
+        }
+
     
     // Monta exatamente o texto que você quer (ex: "LINK_15.00")
     const identificadorLink = "LINK_" + valorDigitado;
