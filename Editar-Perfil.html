@@ -694,8 +694,8 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         
         let formData = new FormData();
         formData.append("entry.1725042433", valor);
-        formData.append("entry.790821356", "19");
-        formData.append("entry.718294531", "CONFIG_QUANTIDADE_NUMEROS");
+        formData.append("entry.718294531", "19");
+        formData.append("entry.790821356", "CONFIG_QUANTIDADE_NUMEROS");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -707,8 +707,8 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         
         let formData = new FormData();
         formData.append("entry.1725042433", valor);
-        formData.append("entry.790821356", "20"); 
-        formData.append("entry.718294531", "CONFIG_VALOR_NUMERO");
+        formData.append("entry.718294531", "20"); 
+        formData.append("entry.790821356", "CONFIG_VALOR_NUMERO");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -720,8 +720,8 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         
         let formData = new FormData();
         formData.append("entry.1725042433", valor);
-        formData.append("entry.790821356", "21"); 
-        formData.append("entry.718294531", "CONFIG_CHAVE_PIX");
+        formData.append("entry.718294531", "21"); 
+        formData.append("entry.790821356", "CONFIG_CHAVE_PIX");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -733,8 +733,8 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.718294531", valorInput);
-        formData.append("entry.790821356", valorInput2);
+        formData.append("entry.790821356", valorInput);
+        formData.append("entry.718294531", valorInput2);
 
         if (modoSelecionado === 'editar') {
             formData.append("entry.718294531", "Editado");
