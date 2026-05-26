@@ -80,6 +80,7 @@
         }
 
         .premio-card {
+            display: none; /* Adicione esta linha para esconder todos por padrão */
             background: #faf8f5;
             border: 1px solid #e6dfd3;
             border-radius: 10px;
@@ -710,12 +711,7 @@
         }
     }
     /*___________*/
-    
-    
-
-
-
-        
+       
     </style>
 </head>
 <body>
@@ -778,7 +774,7 @@
             <img id="3" style="border-radius: 100%;" src="https://i.ibb.co/dsXbHQSH/83944.png" alt="Foto de Perfil" class="premio-img">
             
                 <h2 id="4"><strong style="color: red; font-size: 15px;">
-                    Nome do Sorteio
+                   Nome do Sorteio
                 </strong>
                 </h2>
             
@@ -811,7 +807,7 @@
                 <div id="24" class="premio-titulo">-</div>
                 <img id="25" src="https://i.ibb.co/dsXbHQSH/83944.png" alt="R$ 100,00 no Pix" class="premio-img">
                 <p id="26"></p>
-            </div
+            </div>
 
              <div class="premio-card">
                 <span id="27" class="badge"></span>
@@ -844,7 +840,7 @@
 
         <div class="acao-container">            
             <p id="" style="color: #919191"> 
-               <steong style="font-size: 17px; color: #eb3a34">🤍 Mensagem de Agradecimento 🤍</steong>
+               <strong style="font-size: 17px; color: #eb3a34">🤍 Mensagem de Agradecimento 🤍</strong>
             </p><br>
 <p id="15" style="color: #919191">
     SEM TEXTO</p>
@@ -931,22 +927,19 @@ onmouseup="this.style.transform='scale(1.05)'">
         <div class="modal-content">                    
             <div class="modal-title" id="modalCadastroTitulo">Dados do Comprador </div>
             
-            <div><div class="bilhete-container" style="background-color: #fff9db; border-left: 5px solid #fab005; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-family: sans-serif; max-width: 500px; margin: 20px auto; color: #2b2b2b;">
+            <div class="bilhete-container" style="background-color: #fff9db; border-left: 5px solid #fab005; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); font-family: sans-serif; max-width: 500px; margin: 20px auto; color: #2b2b2b;">
     <p style="margin: 0; line-height: 1.5; font-size: 16px;">
      
     <div class="aviso-sorteio" style="background-color: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; border-radius: 8px; font-family: sans-serif; max-width: 500px; margin: 20px auto; color: #1b5e20;">
         <p>Número Escolido:
-        <strong><span id="numSelecionadoTitulo" style="color: red;">00</span><strong>
+        <strong><span id="numSelecionadoTitulo" style="color: red;">00</span></strong>
         </p>
     </div>
             
-    </p>
-    <p style="text-align: center; margin: 10px 0 0 0; font-size: 20px;">
-    </p>
-                <div class="aviso-sorteio" style="background-color: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; border-radius: 8px; font-family: sans-serif; max-width: 500px; margin: 20px auto; color: #1b5e20;">
-    <p style="margin: 0; line-height: 1.5; font-size: 16px; text-align: center;">
-        ⏳ O sorteio logo, logo começará...<br> Enquanto isso, nós lhe desejamos <strong>bastante sorte</strong>! 🍀
-    </p>
+    <div class="aviso-sorteio" style="background-color: #e8f5e9; border-left: 5px solid #2e7d32; padding: 15px; border-radius: 8px; font-family: sans-serif; max-width: 500px; margin: 20px auto; color: #1b5e20;">
+        <p style="margin: 0; line-height: 1.5; font-size: 16px; text-align: center;">
+            ⏳ O sorteio logo, logo começará...<br> Enquanto isso, nós lhe desejamos <strong>bastante sorte</strong>! 🍀
+        </p>
     </div>
 
             
@@ -1115,8 +1108,19 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
                             console.log(`Sucesso: Link de destino ${idElemento} atualizado com: ${conteudo}`);
                         } else {
                             // Para qualquer outro elemento (p, span, div, h1), muda o texto de dentro
+                            } else {
+                            // Para qualquer outro elemento (p, span, div, h1), muda o texto de dentro
                             elemento.textContent = conteudo;
                             console.log(`Sucesso: Texto ${idElemento} atualizado com: ${conteudo}`);
+
+                            // Se o elemento for um dos títulos dos prêmios (9, 11, 24 ou 28)
+                            // e contiver um texto válido, mostra o card inteiro na tela
+                            if (conteudo && conteudo !== "" && conteudo !== "-") {
+                                const cardPai = elemento.closest('.premio-card');
+                                if (cardPai) {
+                                    cardPai.style.display = 'block';
+                                }
+                            }
                         }
                     } else {
                         console.warn(`ID não encontrado no HTML: ${idElemento}`);
