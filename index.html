@@ -1400,25 +1400,25 @@ window.linksPagamentoPlanilha = {};
         btnCancelarCadastro.addEventListener('click', () => modalCadastro.style.display = 'none');
         btnVoltar.addEventListener('click', () => modalConfirmacao.style.display = 'none');
         
-        btnPagar.addEventListener('click', function() {
+       btnPagar.addEventListener('click', function() {
     const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
     const total = numerosSelecionados.length * window.valorPorNumero;
     const valorChave = total.toFixed(2);
     
     // 1. Busca o link correspondente ao valor na planilha
-    const linkPagamentoExato = window.linksPagamentoPlanilha[valorChave];
+    let linkPagamentoExato = window.linksPagamentoPlanilha[valorChave];
+    let usouPixPadrao = false;
         
-    // 2. SE NÃO EXISTIR O LINK PARA ESSE VALOR NA PLANILHA:
+    // 2. SE NÃO EXISTIR O LINK DE VALOR: Usa a Chave Pix padrão da planilha
     if (!linkPagamentoExato || linkPagamentoExato.trim() === "") {
-        alert("Link de pagamento não cadastrado para esse valor. Desculpe!!!");
-        return; // Para a execução, não copia nada e não abre o WhatsApp
+        linkPagamentoExato = window.chavePixPlanilha;
+        usouPixPadrao = true;
     }
         
-    // 3. SE O LINK EXISTIR, COPIA ELE AUTOMATICAMENTE (Funciona como Pix Copia e Cola / Link de pagamento)
+    // 3. COPIA O TEXTO (Link ou Chave Pix) AUTOMATICAMENTE
     navigator.clipboard.writeText(linkPagamentoExato).then(() => {
-        console.log("Código de pagamento copiado para a área de transferência!");
+        console.log("Copiado para a área de transferência!");
     }).catch(err => {
-        // Alternativa de segurança caso o navegador bloqueie o clipboard padrão
         const inputProvisorio = document.createElement("input");
         inputProvisorio.value = linkPagamentoExato;
         document.body.appendChild(inputProvisorio);
@@ -1426,9 +1426,6 @@ window.linksPagamentoPlanilha = {};
         document.execCommand("copy");
         document.body.removeChild(inputProvisorio);
     });
-
-    // Notifica o usuário discretamente que foi copiado antes de mudar de tela
-    alert("Código PIX / Link de pagamento copiado com sucesso! Você será redirecionado ao WhatsApp.");
 
     // 4. MONTA A MENSAGEM PARA O WHATSAPP
     const dadosSalvos = JSON.parse(localStorage.getItem('rifa_dados_comprador'));
@@ -1440,7 +1437,13 @@ window.linksPagamentoPlanilha = {};
     textoWhatsapp += `📱 *WhatsApp:* ${whatsComprador}\n\n`;
     textoWhatsapp += `🔢 *Números Escolhidos:* ${numerosSelecionados.join(', ')}\n`;
     textoWhatsapp += `💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-    textoWhatsapp += `🔗 *Pix/Link para Pagamento:* ${linkPagamentoExato}\n\n`;
+    
+    if (usouPixPadrao) {
+        textoWhatsapp += `🔑 *Chave PIX para Pagamento:* ${linkPagamentoExato}\n\n`;
+    } else {
+        textoWhatsapp += `🔗 *Link para Pagamento:* ${linkPagamentoExato}\n\n`;
+    }
+    
     textoWhatsapp += `🔻🔻🔻🔻🔻🔻🔻🔻🔻\n\n`;
     textoWhatsapp += `Por favor, nos enviar o comprovante aqui mesmo para validar seus números!\n\n`;
     textoWhatsapp += `____________________________\n\n`;
