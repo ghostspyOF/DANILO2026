@@ -1432,15 +1432,32 @@ window.linksPagamentoPlanilha = {};
     const total = numerosSelecionados.length * valorPorNumero;
     const valorChave = total.toFixed(2);
     
-    // Busca o link na memória carregada da planilha
+    // 1. Busca o link correspondente ao valor na planilha
     const linkPagamentoExato = window.linksPagamentoPlanilha[valorChave];
         
-    // SE NÃO EXISTIR O LINK PARA ESSE VALOR NA PLANILHA:
+    // 2. SE NÃO EXISTIR O LINK PARA ESSE VALOR NA PLANILHA:
     if (!linkPagamentoExato || linkPagamentoExato.trim() === "") {
         alert("Link de pagamento não cadastrado para esse valor. Desculpe!!!");
-        return; // Para a execução e não abre o WhatsApp
+        return; // Para a execução, não copia nada e não abre o WhatsApp
     }
         
+    // 3. SE O LINK EXISTIR, COPIA ELE AUTOMATICAMENTE (Funciona como Pix Copia e Cola / Link de pagamento)
+    navigator.clipboard.writeText(linkPagamentoExato).then(() => {
+        console.log("Código de pagamento copiado para a área de transferência!");
+    }).catch(err => {
+        // Alternativa de segurança caso o navegador bloqueie o clipboard padrão
+        const inputProvisorio = document.createElement("input");
+        inputProvisorio.value = linkPagamentoExato;
+        document.body.appendChild(inputProvisorio);
+        inputProvisorio.select();
+        document.execCommand("copy");
+        document.body.removeChild(inputProvisorio);
+    });
+
+    // Notifica o usuário discretamente que foi copiado antes de mudar de tela
+    alert("Código PIX / Link de pagamento copiado com sucesso! Você será redirecionado ao WhatsApp.");
+
+    // 4. MONTA A MENSAGEM PARA O WHATSAPP
     const dadosSalvos = JSON.parse(localStorage.getItem('rifa_dados_comprador'));
     const nomeComprador = dadosSalvos ? dadosSalvos.nome : "Não informado";
     const whatsComprador = dadosSalvos ? dadosSalvos.whatsapp : "Não informado";
@@ -1450,13 +1467,14 @@ window.linksPagamentoPlanilha = {};
     textoWhatsapp += `📱 *WhatsApp:* ${whatsComprador}\n\n`;
     textoWhatsapp += `🔢 *Números Escolhidos:* ${numerosSelecionados.join(', ')}\n`;
     textoWhatsapp += `💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-    textoWhatsapp += `🔗 *Link para Pagamento: * ${linkPagamentoExato}\n\n`;
+    textoWhatsapp += `🔗 *Pix/Link para Pagamento:* ${linkPagamentoExato}\n\n`;
     textoWhatsapp += `🔻🔻🔻🔻🔻🔻🔻🔻🔻\n\n`;
     textoWhatsapp += `Por favor, nos enviar o comprovante aqui mesmo para validar seus números!\n\n`;
     textoWhatsapp += `____________________________\n\n`;
     textoWhatsapp += `*CLICA EM ENVIAR MENSAGEM AUTOMATICA*\n\n`;
     textoWhatsapp += `👉👉👉👉👉👉\n\n`;
 
+    // 5. DIRECIONA PARA O WHATSAPP CONFIGURADO
     const numeroWhatsBruto = window.whatsappPlanilha || "5562995679219";
     const numeroWhatsPlanilha = numeroWhatsBruto.replace(/\D/g, ''); 
     const numeroWhatsFinal = numeroWhatsPlanilha.startsWith('55') ? numeroWhatsPlanilha : '55' + numeroWhatsPlanilha;
