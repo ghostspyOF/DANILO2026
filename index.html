@@ -1409,16 +1409,15 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
         btnVoltar.addEventListener('click', () => modalConfirmacao.style.display = 'none');
         
         btnPagar.addEventListener('click', function() {
-    const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
-    const total = numerosSelecionados.length * valorPorNumero;
-    
-    // ABAIXO AS LINHAS QUE VOCÊ DEVE ADICIONAR:
-    const dadosSalvos = JSON.parse(localStorage.getItem('rifa_dados_comprador'));
-    const nomeComprador = dadosSalvos ? dadosSalvos.nome : "Não informado";
-    const whatsComprador = dadosSalvos ? dadosSalvos.whatsapp : "Não informado";
-    const linkPagamentoExato = LINKS_PAGAMENTO[total.toFixed(2)] || "32865511120";
-        
-    let textoWhatsapp = `Administração: Desde agora nós organizadores agradece a sua participação\n\n`;
+            const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
+            const total = numerosSelecionados.length * valorPorNumero;
+            
+            const dadosSalvos = JSON.parse(localStorage.getItem('rifa_dados_comprador'));
+            const nomeComprador = dadosSalvos ? dadosSalvos.nome : "Não informado";
+            const whatsComprador = dadosSalvos ? dadosSalvos.whatsapp : "Não informado";
+            const linkPagamentoExato = LINKS_PAGAMENTO[total.toFixed(2)] || window.chavePixPlanilha;
+                
+            let textoWhatsapp = `Administração: Desde agora nós organizadores agradece a sua participação\n\n`;
             textoWhatsapp += `👤 *Nome:* ${nomeComprador}\n`;
             textoWhatsapp += `📱 *WhatsApp:* ${whatsComprador}\n\n`;
             textoWhatsapp += `🔢 *Números Escolhidos:* ${numerosSelecionados.join(', ')}\n`;
@@ -1435,11 +1434,18 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
             textoWhatsapp += `*CLICA EM ENVIAR MENSAGEM AUTOMATICA*\n\n`;
             textoWhatsapp += `👉👉👉👉👉👉\n\n`;
 
+            // 🌟 LOGICA DINÂMICA DO WHATSAPP AQUI:
+            // 1. Pega o número que veio da planilha e remove parênteses, espaços ou traços
+            const numeroWhatsPlanilha = window.chavePixPlanilha.replace(/\D/g, ''); 
+            
+            // 2. Garante que o número vai ter o "55" do Brasil na frente se o usuário não colocou na planilha
+            const numeroWhatsFinal = numeroWhatsPlanilha.startsWith('55') ? numeroWhatsPlanilha : '55' + numeroWhatsPlanilha;
         
-            window.open(`https://api.whatsapp.com/send?phone=556291740699&text=${encodeURIComponent(textoWhatsapp)}`, '_blank');
+            // 3. Abre o link com o número final correto obtido da planilha
+            window.open(`https://api.whatsapp.com/send?phone=${numeroWhatsFinal}&text=${encodeURIComponent(textoWhatsapp)}`, '_blank');
             modalConfirmacao.style.display = 'none';
         });
-
+        
         carregarDadosDaPlanilha();
         setInterval(carregarDadosDaPlanilha, 30000);
     </script>
