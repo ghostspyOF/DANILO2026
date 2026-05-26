@@ -693,9 +693,9 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.1725042433", valor); // Explicação: Recebe o valor digitado (neste caso, a quantidade de números)
-        formData.append("entry.790821356", "19"); // Explicação: Recebe a identificação da linha/ID de configuração (Linha 19)
-        formData.append("entry.718294531", "CONFIG_QUANTIDADE_NUMEROS"); // Explicação: Recebe o tipo da ação/variável que está sendo alterada no banco
+        formData.append("entry.1725042433", valor);
+        formData.append("entry.790821356", "19");
+        formData.append("entry.718294531", "CONFIG_QUANTIDADE_NUMEROS");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -704,11 +704,11 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
     function executarAcaoQuantidade2() {
         const valor = document.getElementById('inputQuantidade2').value;
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-                         https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse
+        
         let formData = new FormData();
-        formData.append("entry.1725042433", valor); // Explicação: Recebe o valor digitado (neste caso, o valor por número)
-        formData.append("entry.790821356", "20"); // Explicação: Recebe a identificação da linha/ID de configuração (Linha 20)
-        formData.append("entry.718294531", "CONFIG_VALOR_NUMERO"); // Explicação: Recebe o tipo da ação/variável que está sendo alterada no banco
+        formData.append("entry.1725042433", valor);
+        formData.append("entry.790821356", "20"); 
+        formData.append("entry.718294531", "CONFIG_VALOR_NUMERO");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -719,9 +719,9 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.1725042433", valor); // Explicação: Recebe o valor digitado (neste caso, a chave PIX)
-        formData.append("entry.790821356", "21"); // Explicação: Recebe a identificação da linha/ID de configuração (Linha 21)
-        formData.append("entry.718294531", "CONFIG_CHAVE_PIX"); // Explicação: Recebe o tipo da ação/variável que está sendo alterada no banco
+        formData.append("entry.1725042433", valor);
+        formData.append("entry.790821356", "21"); 
+        formData.append("entry.718294531", "CONFIG_CHAVE_PIX");
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -733,11 +733,11 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.1725042433", valorInput); // Explicação: Recebe o novo conteúdo editado (Texto ou URL da imagem)
-        formData.append("entry.790821356", valorInput2); // Explicação: Recebe o ID ou número da linha correspondente que sofrerá a alteração geral
+        formData.append("entry.718294531", valorInput);
+        formData.append("entry.790821356", valorInput2);
 
         if (modoSelecionado === 'editar') {
-            formData.append("entry.718294531", "Editado"); // Explicação: Envia o status/ação fixa "Editado" para a coluna de controle do sistema
+            formData.append("entry.718294531", "Editado");
             if (currentType === 'image') currentTarget.src = valorInput;
             else currentTarget.innerText = valorInput;
         }
