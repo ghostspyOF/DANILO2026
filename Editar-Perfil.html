@@ -812,26 +812,30 @@
         }
 
         function executarAcao() {
-            const valorInput = document.getElementById('modalInput' + currentModalId).value;
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-            
-            let formData = new FormData();
-            formData.append("entry.1725042433", valorInput);
-            formData.append("entry.718294531", valorInput2);
+    const valorInput = document.getElementById('modalInput' + currentModalId).value;
+    
+    // Correção da busca do ID adicionando o hífen correto para bater com o HTML (Ex: modalInput-2--1)
+    const valorInput2 = document.getElementById('modalInput-2-' + currentModalId.replace('-', '')).value;
+    
+    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
+    
+    let formData = new FormData();
+    formData.append("entry.1725042433", valorInput);
+    formData.append("entry.718294531", valorInput2);
 
-            if (modoSelecionado === 'editar') {
-                formData.append("entry.790821356", "Editado");
-                if (currentType === 'image') currentTarget.src = valorInput;
-                else currentTarget.innerText = valorInput;
-            }
+    if (modoSelecionado === 'editar') {
+        formData.append("entry.790821356", "Editado");
+        if (currentType === 'image') currentTarget.src = valorInput;
+        else currentTarget.innerText = valorInput;
+    }
 
-            if(modoSelecionado) {
-                fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-                alert("Alteração salva com sucesso!");
-            }
-            
-            closeModal(currentModalId);
-        }
+    if(modoSelecionado) {
+        fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
+        alert("Alteração salva com sucesso!");
+    }
+    
+    closeModal(currentModalId);
+}
 
         function closeModal(suffix) { 
             if(!suffix) suffix = currentModalId;
