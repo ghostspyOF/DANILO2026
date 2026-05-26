@@ -745,19 +745,6 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         alert("Enviado com sucesso!");
     }
     //❎❎
-function executarAcaoQuantidade3() {
-    const valor = document.getElementById('inputQuantidade3').value;
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-    
-    let formData = new FormData();
-    formData.append("entry.1725042433", valor);
-    formData.append("entry.718294531", "4");
-    formData.append("entry.790821356", "CONFIG_CHAVE_PIX");
-
-    fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-    alert("Enviado com sucesso!");
-}
-
 // 🟢 COLE A SUA NOVA FUNÇÃO JAVASCRIPT AQUI:
 function executarAcaoLinkDinamico() {
     const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
