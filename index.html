@@ -1242,34 +1242,7 @@ window.linksPagamentoPlanilha = {};
             } else {
                 modalFlutuante.style.display = 'none';
             }
-        }
-//🚫🚫🚫
-                // FUNÇÃO PARA COPIAR A CHAVE PIX
-        document.getElementById('btnPagar').addEventListener('click', function() {
-            const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
-            const total = numerosSelecionados.length * valorPorNumero;
-            // Pega a chave PIX correspondente ao valor ou usa a padrão
-            // Procure por esta linha dentro da função do seu botão e mude para:
-            const chavePix = LINKS_PAGAMENTO[total.toFixed(2)] || window.chavePixPlanilha;
-        
-
-            // Copia para a área de transferência
-            navigator.clipboard.writeText(chavePix).then(() => {
-                alert("Chave PIX copiada com sucesso!");
-            }).catch(err => {
-                console.error("Erro ao copiar: ", err);
-                // Alternativa caso o navegador bloqueie o clipboard (ex: falta de HTTPS)
-                const inputProvisorio = document.createElement("input");
-                inputProvisorio.value = chavePix;
-                document.body.appendChild(inputProvisorio);
-                inputProvisorio.select();
-                document.execCommand("copy");
-                document.body.removeChild(inputProvisorio);
-                alert("Chave PIX copiada!");
-            });
-        });
-
-        
+        }        
 
         function carregarDadosDaPlanilha() {
             fetch(SPREADSHEET_CSV_URL)
@@ -1429,7 +1402,7 @@ window.linksPagamentoPlanilha = {};
         
         btnPagar.addEventListener('click', function() {
     const numerosSelecionados = Object.keys(reservas).map(Number).sort((a, b) => a - b);
-    const total = numerosSelecionados.length * valorPorNumero;
+    const total = numerosSelecionados.length * window.valorPorNumero;
     const valorChave = total.toFixed(2);
     
     // 1. Busca o link correspondente ao valor na planilha
