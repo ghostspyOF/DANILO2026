@@ -1085,7 +1085,7 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
                     // --- CONFIGURAÇÃO: VALOR POR NÚMERO ---
                     if (idElemento === "CONFIG_VALOR_NUMERO") {
                         const valorLimpo = conteudo.replace(',', '.');
-                        valorPorNumero = parseFloat(valorLimpo) || 20.00;
+                        valorPorNumero = parseFloat(valorLimpo) || 'CARREGANDO';
                         console.log(`Sucesso: Valor por número definido para: R$ ${valorPorNumero}`);
                         return;
                     }
