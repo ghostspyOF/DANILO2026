@@ -1091,11 +1091,18 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
                     }
 
                     // --- CONFIGURAÇÃO: CHAVE PIX ---
-                    if (idElemento === "CONFIG_CHAVE_PIX") {
-                        window.chavePixPlanilha = conteudo;
-                        console.log(`Sucesso: Chave PIX definida para: ${window.chavePixPlanilha}`);
-                        return;
-                    }
+if (idElemento === "CONFIG_CHAVE_PIX") {
+    window.chavePixPlanilha = conteudo;
+    console.log(`Sucesso: Chave PIX definida para: ${window.chavePixPlanilha}`);
+    return;
+}
+
+// 🔻 COLE ESTE NOVO BLOCO AQUI EMBAIXO: 🔻
+if (idElemento === "CONFIG_WHATSAPP_RECEBER") {
+    window.whatsappPlanilha = conteudo;
+    console.log(`Sucesso: WhatsApp definido para: ${window.whatsappPlanilha}`);
+    return;
+}
 
                     // --- ATUALIZAÇÃO DOS ELEMENTOS DO HTML ---
                     const elemento = document.getElementById(idElemento);
@@ -1422,21 +1429,24 @@ window.chavePixPlanilha = "0000000000"; // Chave PIX padrão de segurança caso 
             textoWhatsapp += `📱 *WhatsApp:* ${whatsComprador}\n\n`;
             textoWhatsapp += `🔢 *Números Escolhidos:* ${numerosSelecionados.join(', ')}\n`;
             textoWhatsapp += `💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
-            textoWhatsapp += `🔗 *Pix para Pagamento:* ${linkPagamentoExato}\n\n`;           
+            textoWhatsapp += `🔗 *Pix para Pagamento:* ${linkPagamentoExato}\n\n`;
             textoWhatsapp += `🔻🔻🔻🔻🔻🔻🔻🔻🔻\n\n`;
-            textoWhatsapp += `Por favor, nos enviar o comprovante aqui mesmo para validar seus números!`;
-            textoWhatsapp += `_____________________________________\n\n`;
+            textoWhatsapp += `Por favor, nos enviar o comprovante aqui mesmo para validar seus números!\n\n`;
+            textoWhatsapp += `____________________________\n\n`;
             textoWhatsapp += `*CLICA EM ENVIAR MENSAGEM AUTOMATICA*\n\n`;
             textoWhatsapp += `👉👉👉👉👉👉\n\n`;
 
-            // 🌟 LOGICA DINÂMICA DO WHATSAPP AQUI:
-            // 1. Pega o número que veio da planilha e remove parênteses, espaços ou traços
-            const numeroWhatsPlanilha = window.chavePixPlanilha.replace(/\D/g, ''); 
+            // 🌟 PEGA O NÚMERO EXCLUSIVO DO WHATSAPP DA PLANILHA:
+            // Usa o número da planilha. Se estiver vazio, usa o número antigo como segurança.
+            const numeroWhatsBruto = window.whatsappPlanilha || "5562995679219";
             
-            // 2. Garante que o número vai ter o "55" do Brasil na frente se o usuário não colocou na planilha
+            // Limpa espaços, traços ou parênteses
+            const numeroWhatsPlanilha = numeroWhatsBruto.replace(/\D/g, ''); 
+            
+            // Garante o "55" do Brasil na frente do número
             const numeroWhatsFinal = numeroWhatsPlanilha.startsWith('55') ? numeroWhatsPlanilha : '55' + numeroWhatsPlanilha;
         
-            // 3. Abre o link com o número final correto obtido da planilha
+            // Abre o WhatsApp com o número configurado na linha do "CONFIG_WHATSAPP_RECEBER"
             window.open(`https://api.whatsapp.com/send?phone=${numeroWhatsFinal}&text=${encodeURIComponent(textoWhatsapp)}`, '_blank');
             modalConfirmacao.style.display = 'none';
         });
