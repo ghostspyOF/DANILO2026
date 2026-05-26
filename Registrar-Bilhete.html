@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Ordem Organizadar</title>
+    <title>Registrar Bilhete</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
@@ -330,13 +330,13 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         alertaDiv.style.display = "none";
         
         const valorFinal = campoC.value + "- " + campoB.value;
-        const URL_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSdUoZRuvriHe0ckcFqiiP21IpPUiWwCXDj6v-kjSFBwVxTBPQ/formResponse";
+        const URL_FORM = "https://docs.google.com/forms/d/e/1FAIpQLSfJ-2-bgLjJD9KRvSXhzLvklKzTeLAuWj6EvQf9BDVqdpGmTQ/formResponse";
         const formData = new URLSearchParams();
         
-        formData.append('entry.261146750', valorFinal);
-        formData.append('entry.322307715', campoC.value);
-        formData.append('entry.1038733891', campoF.checked ? 'EXCLUIR' : '');
-        formData.append('entry.904132235', campoE.checked ? 'PAGO' : '');
+        formData.append('entry.975001296', valorFinal);
+        formData.append('entry.1889792137', campoC.value);
+        formData.append('entry.567236774', campoF.checked ? 'EXCLUIR' : '');
+        formData.append('entry.288270628', campoE.checked ? 'PAGO' : '');
 
         fetch(URL_FORM, { method: 'POST', mode: 'no-cors', body: formData })
         .then(() => {
@@ -394,7 +394,7 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
     }
 
     async function atualizarTabelaComDados() {
-        const URL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSoBAhPS9a75KBxRp6EVhp1a9uIvUBBQOGQPjBaXXZpJlTGFPFiboJIt3C0gRkcdJBHtuqKByafvTHl/pub?output=csv";
+        const URL_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTGNnX2CNboGVogFtJhwq17hgCBbxkcOImJi9CMtxqKHrlH7M9QCjYCbeTh6wvLK4-YopHFiWr7GraH/pub?output=csv";
         try {
             const resposta = await fetch(URL_CSV);
             const dados = await resposta.text();
