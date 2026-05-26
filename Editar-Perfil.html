@@ -693,9 +693,9 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.1725042433", valor);
-        formData.append("entry.718294531", "19");
-        formData.append("entry.790821356", "CONFIG_QUANTIDADE_NUMEROS");
+        formData.append("entry.1725042433", valor);                       //Primeiro Entry
+        formData.append("entry.718294531", "19");                         //Terceiro Entry
+        formData.append("entry.790821356", "CONFIG_QUANTIDADE_NUMEROS");  //Segundo Entry
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -706,9 +706,9 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.1725042433", valor);
-        formData.append("entry.718294531", "20"); 
-        formData.append("entry.790821356", "CONFIG_VALOR_NUMERO");
+        formData.append("entry.1725042433", valor);                  //Primeiro Entry
+        formData.append("entry.718294531", "20");                    //Terceiro Entry
+        formData.append("entry.790821356", "CONFIG_VALOR_NUMERO");   //Segundo Entry
 
         fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
         alert("Enviado com sucesso!");
@@ -733,11 +733,11 @@ document.getElementById('authSenha').addEventListener('keypress', function (e) {
         const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
         
         let formData = new FormData();
-        formData.append("entry.1725042433", valorInput);    //
-        formData.append("entry.718294531", valorInput2);   //
+        formData.append("entry.1725042433", valorInput);    //Primeiro Entry
+        formData.append("entry.718294531", valorInput2);   //Terceiro Entry
 
         if (modoSelecionado === 'editar') {
-            formData.append("entry.790821356", "Editado"); //
+            formData.append("entry.790821356", "Editado"); //Segundo Entry
             if (currentType === 'image') currentTarget.src = valorInput;
             else currentTarget.innerText = valorInput;
         }
