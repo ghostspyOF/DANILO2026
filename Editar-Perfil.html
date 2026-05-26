@@ -654,6 +654,7 @@
         </form>
     </div>
 
+   
     <script>
         // 🔒 Sistema de Validação Segura via JSONP
         function validarAcessoPainel() {
@@ -685,7 +686,8 @@
                 delete window[nomeCallback];
             };
 
-            const parametros = ?usuario=${encodeURIComponent(usuarioInput)}&senha=${encodeURIComponent(senhaInput)}&callback=${nomeCallback};
+            // CORRIGIDO: Adicionado as crases (Template Strings) para evitar quebra no interpretador do navegador
+            const parametros = `?usuario=${encodeURIComponent(usuarioInput)}&senha=${encodeURIComponent(senhaInput)}&callback=${nomeCallback}`;
             
             const scriptElemento = document.createElement('script');
             scriptElemento.src = urlBackend + parametros;
@@ -720,11 +722,9 @@
             modoSelecionado = 'editar';
             currentModalId = suffix;
 
-            // Correção aqui: garantindo que o ID do botão seletor seja encontrado corretamente com o hífen
             const selBtn = document.getElementById('selEditar' + suffix);
             if(selBtn) selBtn.className = 'selector-btn active-editar';
 
-            // Correção aqui: puxando o ID correto do input do modal correspondente
             const input = document.getElementById('modalInput' + suffix);
             if(input && currentTarget) {
                 input.value = (type === 'image') ? currentTarget.src : currentTarget.innerText;
@@ -755,7 +755,6 @@
             alert("Enviado com sucesso!");
         }
 
-       // 🟢 FUNÇÃO DO LINK DO WHATSAPP
         function executarAcaoLinkDinamico() {
             const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
             const linkDestino = document.getElementById('inputUrlLink').value.trim();
@@ -813,8 +812,6 @@
 
         function executarAcao() {
             const valorInput = document.getElementById('modalInput' + currentModalId).value;
-            
-            // Correção aqui: Ajustado para buscar o ID oculto correto injetando o hífen separador 'modalInput-2' + suffix
             const valorInput2 = document.getElementById('modalInput-2' + currentModalId).value;
             const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
             
