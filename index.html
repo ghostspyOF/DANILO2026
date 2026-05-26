@@ -1405,29 +1405,25 @@ window.linksPagamentoPlanilha = {};
     const total = numerosSelecionados.length * window.valorPorNumero;
     const valorChave = total.toFixed(2);
     
-    // 1. Busca o link correspondente ao valor na planilha
-    let linkPagamentoExato = window.linksPagamentoPlanilha[valorChave];
-    let usouPixPadrao = false;
+    // 1. O TEXTO COPIADO SEMPRE SERÁ A CHAVE PIX PADRÃO (CONFIG_CHAVE_PIX)
+    const textoParaCopiar = window.chavePixPlanilha || "0000000000";
         
-    // 2. SE NÃO EXISTIR O LINK DE VALOR: Usa a Chave Pix padrão da planilha
-    if (!linkPagamentoExato || linkPagamentoExato.trim() === "") {
-        linkPagamentoExato = window.chavePixPlanilha;
-        usouPixPadrao = true;
-    }
-        
-    // 3. COPIA O TEXTO (Link ou Chave Pix) AUTOMATICAMENTE
-    navigator.clipboard.writeText(linkPagamentoExato).then(() => {
-        console.log("Copiado para a área de transferência!");
+    navigator.clipboard.writeText(textoParaCopiar).then(() => {
+        console.log("Chave PIX padrão copiada para a área de transferência!");
     }).catch(err => {
         const inputProvisorio = document.createElement("input");
-        inputProvisorio.value = linkPagamentoExato;
+        inputProvisorio.value = textoParaCopiar;
         document.body.appendChild(inputProvisorio);
         inputProvisorio.select();
         document.execCommand("copy");
         document.body.removeChild(inputProvisorio);
     });
 
-    // 4. MONTA A MENSAGEM PARA O WHATSAPP
+    // 2. BUSCA O LINK DE PAGAMENTO EXATO APENAS PARA EXIBIR NA MENSAGEM DO WHATSAPP
+    const linkPagamentoExato = window.linksPagamentoPlanilha[valorChave];
+    let temLinkValido = linkPagamentoExato && linkPagamentoExato.trim() !== "";
+
+    // 3. MONTA A MENSAGEM PARA O WHATSAPP
     const dadosSalvos = JSON.parse(localStorage.getItem('rifa_dados_comprador'));
     const nomeComprador = dadosSalvos ? dadosSalvos.nome : "Não informado";
     const whatsComprador = dadosSalvos ? dadosSalvos.whatsapp : "Não informado";
@@ -1438,10 +1434,11 @@ window.linksPagamentoPlanilha = {};
     textoWhatsapp += `🔢 *Números Escolhidos:* ${numerosSelecionados.join(', ')}\n`;
     textoWhatsapp += `💰 *Valor Total:* R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
     
-    if (usouPixPadrao) {
-        textoWhatsapp += `🔑 *Chave PIX para Pagamento:* ${linkPagamentoExato}\n\n`;
-    } else {
+    // Se existir o link, coloca o link. Se não, coloca a chave PIX no texto também.
+    if (temLinkValido) {
         textoWhatsapp += `🔗 *Link para Pagamento:* ${linkPagamentoExato}\n\n`;
+    } else {
+        textoWhatsapp += `🔑 *Chave PIX para Pagamento:* ${textoParaCopiar}\n\n`;
     }
     
     textoWhatsapp += `🔻🔻🔻🔻🔻🔻🔻🔻🔻\n\n`;
@@ -1450,7 +1447,7 @@ window.linksPagamentoPlanilha = {};
     textoWhatsapp += `*CLICA EM ENVIAR MENSAGEM AUTOMATICA*\n\n`;
     textoWhatsapp += `👉👉👉👉👉👉\n\n`;
 
-    // 5. DIRECIONA PARA O WHATSAPP CONFIGURADO
+    // 4. DIRECIONA PARA O WHATSAPP CONFIGURADO
     const numeroWhatsBruto = window.whatsappPlanilha || "5562995679219";
     const numeroWhatsPlanilha = numeroWhatsBruto.replace(/\D/g, ''); 
     const numeroWhatsFinal = numeroWhatsPlanilha.startsWith('55') ? numeroWhatsPlanilha : '55' + numeroWhatsPlanilha;
