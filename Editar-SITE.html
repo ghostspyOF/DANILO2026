@@ -1077,7 +1077,7 @@
 
         //===PASSO 4 DA SEGURANÇA 🔐🔐🔐🔐________
         
-                async function validarAcessoPainel() {
+                        async function validarAcessoPainel() {
             const usuarioInput = document.getElementById('authID').value.trim();
             const senhaInput = document.getElementById('authSenha').value.trim();
             const divErro = document.getElementById('erroAuth');
@@ -1092,14 +1092,12 @@
                 return;
             }
 
-            // Ativa o carregamento (Spinner) no botão
             if (btnEntrar) btnEntrar.disabled = true;
             if (textoBotao) textoBotao.style.display = 'none';
             if (spinnerBotao) spinnerBotao.style.display = 'block';
             if (divErro) divErro.style.display = 'none';
 
             try {
-                // Envia os dados via POST para testar a senha no Apps Script
                 const resposta = await fetch(LINK_APP_SCRIPT, {
                     method: 'POST',
                     body: JSON.stringify({ 
@@ -1110,16 +1108,13 @@
                     })
                 });
 
-                // Transforma a resposta do Apps Script em um objeto legível
                 const dadosRetornados = await resposta.json();
 
-                // Verifica se o Apps Script devolveu o status de erro ("Senha incorreta")
                 if (dadosRetornados.status === "erro") {
-                    // Se deu erro, força a ida para o bloco 'catch' para barrar o usuário
                     throw new Error(dadosRetornados.mensagem || "Acesso negado");
                 }
                 
-                // SE PASSOU DO IF ACIMA, A SENHA ESTÁ CORRETA:
+                // Senha correta: armazena credenciais
                 usuarioAutenticado = usuarioInput;
                 senhaAutenticada = senhaInput;
 
@@ -1127,30 +1122,24 @@
                 if (telaBloqueio) telaBloqueio.style.display = 'none';
                 if (divErro) divErro.style.display = 'none';
                 
-                // Libera os botões de envio após a autenticação com sucesso
-                document.getElementById('btnSalvarEnviar').disabled = false;
-                document.getElementById('btnSalvarCores').disabled = false;
+                // CORREÇÃO AQUI: Removeu as linhas dos botões inexistentes que travavam o login
 
             } catch (erro) {
                 console.error('Erro na autenticação:', erro);
-                
-                // Exibe a mensagem vermelha de erro na tela
                 if (divErro) {
                     divErro.style.display = 'block';
                     divErro.textContent = "ID ou Senha incorretos!";
                 }
-                
-                // Mantém as credenciais vazias para segurança
                 usuarioAutenticado = "";
                 senhaAutenticada = "";
                 sessionStorage.setItem('painelAutorizado', 'false');
             } finally {
-                // Restaura o botão caso o login falhe ou termine
                 if (btnEntrar) btnEntrar.disabled = false;
                 if (textoBotao) textoBotao.style.display = 'block';
                 if (spinnerBotao) spinnerBotao.style.display = 'none';
             }
         }
+
 //===🔐🔐🔐🔐
     </script>
 </body>
