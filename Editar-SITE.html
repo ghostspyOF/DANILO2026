@@ -156,7 +156,7 @@
 
         .btn-confirmar { width: 100%; background: #dc2626; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px;}
 
-        /*🔒🔒🔒TRAVA PARA QUALQUER SITE🔒🔒🔒*/
+        /*PASSO 1 DE 1 DA SEGURANÇA 👇👇👇🔒🔒🔒*/
         #bloqueio-seguranca {
             position: fixed;
             top: 0;
@@ -228,24 +228,215 @@
             margin-top: 10px;
             display: none;
         }
+    /* Configuração do Fundo Preto Fixo */
+#bloqueio-seguranca {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Garante que o modal fique na frente dos códigos */
+.modal-autenticacao {
+    position: relative;
+    z-index: 10;
+    background-color: #ffffff; /* Caso queira o modal branco por cima do fundo preto */
+}
+
+/* Container da Chuva de Código */
+.chuva-codigo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    user-select: none;
+    pointer-events: none; /* Não atrapalha os cliques no formulário */
+    z-index: 1;
+    opacity: 0.35; /* Controla a intensidade do fundo para não atrapalhar a leitura */
+}
+
+/* Linhas de texto caindo */
+.coluna-codigo {
+    color: #00ff33;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    writing-mode: vertical-rl; /* Faz o texto ficar em pé */
+    text-orientation: upright;
+    white-space: nowrap;
+    transform: translateY(-100%);
+    animation: quedaCodigo 4s linear infinite;
+    text-shadow: 0 0 8px #00ff33;
+}
+
+/* Variações de tempo para as colunas caírem de forma aleatória */
+.coluna-codigo:nth-child(2n) { animation-duration: 3s; animation-delay: 1s; font-size: 12px; opacity: 0.7; }
+.coluna-codigo:nth-child(3n) { animation-duration: 5s; animation-delay: 0.5s; font-size: 16px; opacity: 0.5; }
+.coluna-codigo:nth-child(4n) { animation-duration: 2.5s; animation-delay: 1.5s; }
+.coluna-codigo:nth-child(5n) { animation-duration: 6s; animation-delay: 2s; opacity: 0.8; }
+
+/* Animação que faz o código descer */
+@keyframes quedaCodigo {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+/* Atualização do Painel para Preto Transparente */
+.modal-autenticacao {
+    position: relative;
+    z-index: 10;
+    background-color: rgba(15, 23, 42, 0.85) !important; /* Preto azulado suave com 85% de opacidade */
+    backdrop-filter: blur(6px); /* Embaça levemente a chuva que passa atrás */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff !important; /* Textos principais em branco */
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+    overflow: hidden; /* Garante que a chuva interna não saia do quadrado */
+}
+
+/* Ajuste nos textos auxiliares para ficarem legíveis no fundo preto */
+.modal-autenticacao p {
+    color: #94a3b8 !important; /* Cinza claro */
+}
+
+/* Nova camada de chuva para cair DENTRO do modal */
+.chuva-interna {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    pointer-events: none;
+    z-index: 1; 
+    opacity: 0.15; 
+}
+
+
+
+        /*
+        NÃO ESQUER DE COLOCAR ESSA INFORMAÇÃO NO APP ECRIPT DE EDIÇAO OU VALIDAÇAO
+        // ==========================================
+    // NOVO: CAPTURA E VALIDAÇÃO DA SENHA
+    // ==========================================
+    var senhaRecebida = dados.senha; // Captura a senha enviada pelo site
+    var senhaCorreta = "MJSR11"; // <-- ADICIONE SUA SENHA SECRETA AQUI TRRE AS ASPAS
+    
+    if (senhaRecebida !== senhaCorreta) {
+      return ContentService.createTextOutput(JSON.stringify({ 
+        "status": "erro", 
+        "mensagem": "Senha incorreta! Ação não autorizada." 
+      })).setMimeType(ContentService.MimeType.JSON);
+    }
+    // ==========================================
+        */
+        /*🔒🔒🔒🔒Finaha do código de segurança 👆👆👆👆*/
     </style>
 </head>
 <body>
-    <div id="bloqueio-seguranca">
-        <div class="modal-autenticacao" style="position: relative; padding-top: 40px;">
+    <!--===PASSO 2 DE 4 DA SEGUNDA 👇👇👇👇🔐🔐🔐🔐-->
+
+<div id="bloqueio-seguranca">
+    <style>
+        @keyframes vibrarBorda {
+            0% { box-shadow: 0 0 15px #25D366, 0 0 30px #25D366; border-color: #25D366; transform: scale(1); }
+            100% { box-shadow: 0 0 15px #dc2626, 0 0 30px #dc2626; border-color: #dc2626; transform: scale(1.02); }
+        }
+        /* Estilo para o botão do olhinho */
+        .wrapper-senha {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto 0 auto;
+        }
+        .btn-olhinho {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: color 0.2s;
+        }
+        .btn-olhinho:hover {
+            color: #ffffff;
+        }
+    </style>
+
+    <div class="chuva-codigo">
+        <div class="coluna-codigo">const api = 'db'; function() { if(true) return }</div>
+        <div class="coluna-codigo">&lt;div id="auth"&gt; &lt;script&gt; 01010101</div>
+        <div class="coluna-codigo">window.localStorage.setItem('token', user);</div>
+        <div class="coluna-codigo">import { useState, useEffect } from 'react';</div>
+        <div class="coluna-codigo">printf("Access Granted\n"); system("clear");</div>
+        <div class="coluna-codigo">SELECT * FROM users WHERE status = 'active';</div>
+        <div class="coluna-codigo">while(true) { connect(); retry_login(); }</div>
+        <div class="coluna-codigo">$&lt; .root_access_granted_ #include &lt;stdio.h&gt;</div>
+        <div class="coluna-codigo">error_auth_failed; encrypted_sha256_pass;</div>
+        <div class="coluna-codigo">document.getElementById('senha').value;</div>
+        <div class="coluna-codigo">01101100 01101111 01100111 01101001 01101110</div>
+        <div class="coluna-codigo">chmod +x script.sh &amp;&amp; ./run_auth_backup</div>
+    </div>
+
+    <div class="modal-autenticacao" style="position: relative; padding-top: 40px; background-color: rgba(15, 23, 42, 0.85); backdrop-filter: blur(6px); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7); overflow: hidden;">
+        
+        <div class="chuva-interna" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: space-around; pointer-events: none; z-index: 1; opacity: 0.18;">
+            <div class="coluna-codigo" style="font-size: 11px; animation-duration: 2.2s;">0101010101</div>
+            <div class="coluna-codigo" style="font-size: 11px; animation-duration: 3.5s; animation-delay: 0.8s;">if(auth)</div>
+            <div class="coluna-codigo" style="font-size: 11px; animation-duration: 2.8s; animation-delay: 0.3s;">return true</div>
+            <div class="coluna-codigo" style="font-size: 11px; animation-duration: 4.1s;">System.out</div>
+        </div>
+
+        <div style="position: relative; z-index: 5;">
             <a href="index.html" 
-               style="position: absolute; top: 15px; right: 15px; color: #dc2626; text-decoration: none; font-family: Arial, sans-serif; font-size: 40px; font-weight: bold; line-height: 1; cursor: pointer; transition: transform 0.2s;"
+               style="position: absolute; top: -25px; right: 15px; color: #dc2626; text-decoration: none; font-family: Arial, sans-serif; font-size: 40px; font-weight: bold; line-height: 1; cursor: pointer; transition: transform 0.2s;"
                onmouseover="this.style.transform='scale(1.2)'" 
                onmouseout="this.style.transform='scale(1)'"
                title="Voltar para o início">&times;</a>
 
-            <h2 style="font-size: 40px;">Área Restrita</h2>
-            <p>Insira suas credenciais para gerenciar o site</p>
+            <img src="https://i.ibb.co/bMwNpGMw/88783.png" alt="Foto de Perfil" 
+                 style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin: 0 auto 20px auto; display: block; border: 4px solid #25D366; box-shadow: 0 0 15px #25D366, 0 0 25px #dc2626; animation: vibrarBorda 0.8s infinite alternate;">
 
-            <input type="text" id="authID" class="campo-autenticacao" placeholder="Digite o ID de usuário">
-            <input type="password" id="authSenha" class="campo-autenticacao" placeholder="Digite a senha">
+            <h2 style="font-size: 40px; color: #ffffff; margin-bottom: 5px;">Área Restrita</h2>
+            <p style="color: #94a3b8; margin-bottom: 20px;">Insira suas credenciais para gerenciar o site</p>
 
-            <button type="button" class="btn-acessar" onclick="validarAcessoPainel()">ENTRAR</button><br>
+            <input type="text" id="authID" class="campo-autenticacao" placeholder="Digite o ID de usuário" style="background: rgba(255,255,255,0.07); color: #fff; border: 1px solid rgba(255,255,255,0.2); width: 100%; max-width: 300px; margin: 0 auto; display: block;">
+            
+            <div class="wrapper-senha">
+                <input type="password" id="authSenha" class="campo-autenticacao" placeholder="Digite a senha" style="background: rgba(255,255,255,0.07); color: #fff; border: 1px solid rgba(255,255,255,0.2); width: 100%; padding-right: 45px; box-sizing: border-box; margin: 0;">
+                <button type="button" class="btn-olhinho" onclick="alternarVisibilidadeSenha()" id="btnOlhinho">👁️</button>
+            </div>
+
+           <button type="button" id="btnEntrar" class="btn-acessar" onclick="validarAcessoPainel()" style="margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+    <span id="textoBotao">ENTRAR</span>
+    <span id="spinnerBotao" style="display: none; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: girarSpinner 0.8s linear infinite;"></span>
+           </button>
+
+<style>
+    @keyframes girarSpinner {
+        to { transform: rotate(360deg); }
+    }
+</style>
 
             <a href="https://api.whatsapp.com/send?phone=5562995679219&text=Eu%20gostaria%20de%20saber%20a%20senha%20para%20editar%20o%20site" 
                target="_blank" 
@@ -256,6 +447,23 @@
             <div id="erroAuth" class="msg-erro">ID ou Senha incorretos!</div>
         </div>
     </div>
+
+    <script>
+        function alternarVisibilidadeSenha() {
+            const campoSenha = document.getElementById('authSenha');
+            const btnOlhinho = document.getElementById('btnOlhinho');
+            
+            if (campoSenha.type === 'password') {
+                campoSenha.type = 'text';
+                btnOlhinho.textContent = '🙈';
+            } else {
+                campoSenha.type = 'password';
+                btnOlhinho.textContent = '👁️';
+            }
+        }
+    </script>
+</div>
+<!--===PASSO 2 DE 4 DA SEGUNDA 👆👆👆🔐🔐🔐🔐-->
 
     <div class="container">
         <div style="background-color: #111827; padding: 30px; border-radius: 12px; font-family: 'Segoe UI', Roboto, sans-serif; text-align: center; border: 1px solid #1f2937;">
@@ -670,56 +878,12 @@
     </div>
 
     <script>
-        // 🔒 Sistema de Validação Segura via JSONP
-        function validarAcessoPainel() {
-            const usuarioInput = document.getElementById('authID').value.trim();
-            const senhaInput = document.getElementById('authSenha').value.trim();
-            const divErro = document.getElementById('erroAuth');
-
-            const urlBackend = "https://script.google.com/macros/s/AKfycbxnFPcHlGE0qldY0LBW1YEwRyyNt9Oeh_NqAXEnjM2srfwgvElum5JmfSYmPqP6NzhJZA/exec";
-
-            if (!usuarioInput || !senhaInput) {
-                if (divErro) divErro.style.display = 'block';
-                return;
-            }
-
-            const nomeCallback = 'meuCallbackOuvinte_' + Math.round(Math.random() * 1000000);
-
-            window[nomeCallback] = function(resultado) {
-                const telaBloqueio = document.getElementById('bloqueio-seguranca');
-
-                if (resultado && resultado.autorizado === true) {
-                    if (telaBloqueio) telaBloqueio.style.display = 'none';
-                    if (divErro) divErro.style.display = 'none';
-                } else {
-                    if (divErro) divErro.style.display = 'block';
-                    document.getElementById('authSenha').value = '';
-                }
-
-                document.body.removeChild(scriptElemento);
-                delete window[nomeCallback];
-            };
-
-            const parametros = `?usuario=${encodeURIComponent(usuarioInput)}&senha=${encodeURIComponent(senhaInput)}&callback=${nomeCallback}`;
-
-            const scriptElemento = document.createElement('script');
-            scriptElemento.src = urlBackend + parametros;
-
-            scriptElemento.onerror = function() {
-                alert("Erro de autenticação: Verifique sua conexão ou a configuração do script.");
-                if (divErro) divErro.style.display = 'block';
-                document.body.removeChild(scriptElemento);
-                delete window[nomeCallback];
-            };
-
-            document.body.appendChild(scriptElemento);
-        }
-
-        document.getElementById('authSenha').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                validarAcessoPainel();
-            }
-        });
+        //===🔐🔐🔐🔐 PASSO 3 DA SEGURANÇA🔐🔐🔐🔐
+        const LINK_APP_SCRIPT = "https://script.google.com/macros/s/AKfycbxh0F_IeTgJaXTbSx0yavZX-WsQdIiN2wsT68aFh-mRh7_Uh2RTeFuawFOkeMzZQA7G2Q/exec";
+        // Variáveis globais para armazenar o Usuário e a Senha que se logaram com sucesso
+        let usuarioAutenticado = "";
+        let senhaAutenticada = "";
+        //===🔐🔐🔐🔐 
 
         // Mecanismo de Edição Inline e Abertura de Modal
         let currentWrapper = null;
@@ -910,6 +1074,84 @@
             const modal = document.getElementById('editModal' + suffix);
             if(modal) modal.style.display = 'none'; 
         }
+
+        //===PASSO 4 DA SEGURANÇA 🔐🔐🔐🔐________
+        
+                async function validarAcessoPainel() {
+            const usuarioInput = document.getElementById('authID').value.trim();
+            const senhaInput = document.getElementById('authSenha').value.trim();
+            const divErro = document.getElementById('erroAuth');
+            const telaBloqueio = document.getElementById('bloqueio-seguranca');
+            
+            const btnEntrar = document.getElementById('btnEntrar');
+            const textoBotao = document.getElementById('textoBotao');
+            const spinnerBotao = document.getElementById('spinnerBotao');
+
+            if (!usuarioInput || !senhaInput) {
+                if (divErro) divErro.style.display = 'block';
+                return;
+            }
+
+            // Ativa o carregamento (Spinner) no botão
+            if (btnEntrar) btnEntrar.disabled = true;
+            if (textoBotao) textoBotao.style.display = 'none';
+            if (spinnerBotao) spinnerBotao.style.display = 'block';
+            if (divErro) divErro.style.display = 'none';
+
+            try {
+                // Envia os dados via POST para testar a senha no Apps Script
+                const resposta = await fetch(LINK_APP_SCRIPT, {
+                    method: 'POST',
+                    body: JSON.stringify({ 
+                        usuario: usuarioInput, 
+                        senha: senhaInput, 
+                        colunaA: "TESTE_LOGIN", 
+                        colunaB: "Apenas checando a senha" 
+                    })
+                });
+
+                // Transforma a resposta do Apps Script em um objeto legível
+                const dadosRetornados = await resposta.json();
+
+                // Verifica se o Apps Script devolveu o status de erro ("Senha incorreta")
+                if (dadosRetornados.status === "erro") {
+                    // Se deu erro, força a ida para o bloco 'catch' para barrar o usuário
+                    throw new Error(dadosRetornados.mensagem || "Acesso negado");
+                }
+                
+                // SE PASSOU DO IF ACIMA, A SENHA ESTÁ CORRETA:
+                usuarioAutenticado = usuarioInput;
+                senhaAutenticada = senhaInput;
+
+                sessionStorage.setItem('painelAutorizado', 'true');
+                if (telaBloqueio) telaBloqueio.style.display = 'none';
+                if (divErro) divErro.style.display = 'none';
+                
+                // Libera os botões de envio após a autenticação com sucesso
+                document.getElementById('btnSalvarEnviar').disabled = false;
+                document.getElementById('btnSalvarCores').disabled = false;
+
+            } catch (erro) {
+                console.error('Erro na autenticação:', erro);
+                
+                // Exibe a mensagem vermelha de erro na tela
+                if (divErro) {
+                    divErro.style.display = 'block';
+                    divErro.textContent = "ID ou Senha incorretos!";
+                }
+                
+                // Mantém as credenciais vazias para segurança
+                usuarioAutenticado = "";
+                senhaAutenticada = "";
+                sessionStorage.setItem('painelAutorizado', 'false');
+            } finally {
+                // Restaura o botão caso o login falhe ou termine
+                if (btnEntrar) btnEntrar.disabled = false;
+                if (textoBotao) textoBotao.style.display = 'block';
+                if (spinnerBotao) spinnerBotao.style.display = 'none';
+            }
+        }
+//===🔐🔐🔐🔐
     </script>
 </body>
 </html>
