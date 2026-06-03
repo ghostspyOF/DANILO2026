@@ -919,133 +919,171 @@
             }
         }
 
-        function executarAcaoQuantidade() {
+                            // 1. DEFINIR QUANTIDADE DE BILHETES
+        async function executarAcaoQuantidade() {
             const valor = document.getElementById('inputQuantidade').value;
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-
-            let formData = new FormData();
-            formData.append("entry.1725042433", valor);
-            formData.append("entry.718294531", "2");
-            formData.append("entry.790821356", "CONFIG_QUANTIDADE_NUMEROS");
-
-            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-            alert("Enviado com sucesso!");
-        }
-
-        // 🟢 NOVA FUNÇÃO ADICIONADA: ENVIO DO WHATSAPP PARA A LINHA 1 DA PLANILHA
-        function executarAcaoWhatsapp() {
-            const valor = document.getElementById('inputWhatsapp').value;
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-
-            let formData = new FormData();
-            formData.append("entry.1725042433", valor);
-            formData.append("entry.718294531", "1"); // ID "1" para garantir que vai para a Linha 1 da sua lógica de ID
-            formData.append("entry.790821356", "CONFIG_WHATSAPP_RECEBER");
-
-            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-            alert("Enviado com sucesso!");
-        }
-        // 🔵 FUNÇÃO COM CONTADOR AUTOMÁTICO: INICIA NO ID 29 e INCREMENTA
-        function executarAcaoLinkDinamico() {
-            const linkDestino = document.getElementById('inputUrlLink').value.trim();
             
-            // Busca o último ID salvo no navegador. Se não existir, começa no 29
-            let idAtual = localStorage.getItem('ultimoIdLink');
-            if (!idAtual) {
-                idAtual = 29;
-            } else {
-                idAtual = parseInt(idAtual);
+            try {
+                const resposta = await fetch(LINK_APP_SCRIPT, { 
+                    method: "POST", 
+                    body: JSON.stringify({
+                        usuario: usuarioAutenticado,
+                        senha: senhaAutenticada,
+                        colunaA: "CONFIG_QUANTIDADE_NUMEROS",
+                        colunaB: valor
+                    })
+                });
+                const dados = await resposta.json();
+                if(dados.status === "erro") throw new Error(dados.mensagem);
+                alert("Quantidade definida com sucesso!");
+            } catch (erro) {
+                alert("Erro ao salvar: " + erro.message);
+            }
+        }
+
+        // 2. VINCULAR WHATSAPP DO SORTEIO
+        async function executarAcaoWhatsapp() {
+            const valor = document.getElementById('inputWhatsapp').value;
+            
+            try {
+                const resposta = await fetch(LINK_APP_SCRIPT, { 
+                    method: "POST", 
+                    body: JSON.stringify({
+                        usuario: usuarioAutenticado,
+                        senha: senhaAutenticada,
+                        colunaA: "CONFIG_WHATSAPP_RECEBER",
+                        colunaB: valor
+                    })
+                });
+                const dados = await resposta.json();
+                if(dados.status === "erro") throw new Error(dados.mensagem);
+                alert("WhatsApp vinculado com sucesso!");
+            } catch (erro) {
+                alert("Erro ao salvar: " + erro.message);
+            }
+        }
+
+        // 3. VALOR UNITÁRIO POR BILHETE
+        async function executarAcaoQuantidade2() {
+            const valor = document.getElementById('inputQuantidade2').value;
+            
+            try {
+                const resposta = await fetch(LINK_APP_SCRIPT, { 
+                    method: "POST", 
+                    body: JSON.stringify({
+                        usuario: usuarioAutenticado,
+                        senha: senhaAutenticada,
+                        colunaA: "CONFIG_VALOR_NUMERO",
+                        colunaB: valor
+                    })
+                });
+                const dados = await resposta.json();
+                if(dados.status === "erro") throw new Error(dados.mensagem);
+                alert("Novo valor salvo com sucesso!");
+            } catch (erro) {
+                alert("Erro ao salvar: " + erro.message);
+            }
+        }
+
+        // 4. CHAVE PIX DO SORTEIO
+        async function executarAcaoQuantidade3() {
+            const valor = document.getElementById('inputQuantidade3').value;
+            
+            try {
+                const resposta = await fetch(LINK_APP_SCRIPT, { 
+                    method: "POST", 
+                    body: JSON.stringify({
+                        usuario: usuarioAutenticado,
+                        senha: senhaAutenticada,
+                        colunaA: "CONFIG_CHAVE_PIX",
+                        colunaB: valor
+                    })
+                });
+                const dados = await resposta.json();
+                if(dados.status === "erro") throw new Error(dados.mensagem);
+                alert("Chave PIX vinculada com sucesso!");
+            } catch (erro) {
+                alert("Erro ao salvar: " + erro.message);
+            }
+        }
+
+        // 5. VINCULAR LINK DINÂMICO
+        async function executarAcaoLinkDinamico() {
+            const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
+            let linkDestino = document.getElementById('inputUrlLink').value.trim();
+            
+            const apenasNumeros = linkDestino.replace(/\D/g, ''); 
+            if (apenasNumeros.length >= 10 && apenasNumeros.length <= 15) {
+                if (apenasNumeros.length === 11 || apenasNumeros.length === 10) {
+                    linkDestino = "https://wa.me/55" + apenasNumeros;
+                } else {
+                    linkDestino = "https://wa.me/" + apenasNumeros;
+                }
             }
             
-            // Formata o texto da ação (ex: LINK_29, LINK_30...)
-            const identificadorLink = "LINK_" + idAtual;
+            const identificadorLink = "LINK_" + valorDigitado;
             
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-            
-            let formData = new FormData();
-            formData.append("entry.1725042433", linkDestino); 
-            formData.append("entry.718294531", idAtual);             // Envia o ID numérico (29, 30, 31...)
-            formData.append("entry.790821356", identificadorLink);    // Envia o texto "LINK_29"
-
-            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-            
-            alert("Sucesso! Link enviado para o ID " + idAtual + " (" + identificadorLink + ")");
-            
-            // Salva o próximo ID (idAtual + 1) para o próximo clique
-            localStorage.setItem('ultimoIdLink', idAtual + 1);
-            
-            // Limpa o campo de texto
-            document.getElementById('inputUrlLink').value = '';
-        }
-        function executarAcaoLinkDinamico() {
-    const valorDigitado = document.getElementById('inputNumeroLink').value.trim();
-    let linkDestino = document.getElementById('inputUrlLink').value.trim();
-    
-    // 🔥 SEGREDO DO WHATSAPP: Se o usuário digitou apenas números, transforma em link do Whats
-    // Remove parênteses, traços e espaços para testar se é só número
-    const apenasNumeros = linkDestino.replace(/\D/g, ''); 
-    if (apenasNumeros.length >= 10 && apenasNumeros.length <= 15) {
-        // Se não tiver o código do país (55), adiciona automaticamente
-        if (apenasNumeros.length === 11 || apenasNumeros.length === 10) {
-            linkDestino = "https://wa.me/55" + apenasNumeros;
-        } else {
-            linkDestino = "https://wa.me/" + apenasNumeros;
-        }
-    }
-    // Controle automático da linha: começa na 29 se for a primeira vez
-    let linhaPlanilha = localStorage.getItem('proximaLinhaLink');
-    if (!linhaPlanilha) {
-        linhaPlanilha = 29;
-    } else {
-        linhaPlanilha = parseInt(linhaPlanilha);
-    }
-    
-    // Monta exatamente o texto que você quer (ex: "LINK_15.00")
-    const identificadorLink = "LINK_" + valorDigitado;
-    
-    const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-    
-    let formData = new FormData();
-    formData.append("entry.1725042433", linkDestino);       // Vai para a coluna do Link (já convertido se for Whats)
-    formData.append("entry.718294531", linhaPlanilha);     // Força ir para a linha 29, depois 30, etc.
-    formData.append("entry.790821356", identificadorLink);  // Envia "LINK_15.00" para a sua coluna A
-    fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-    
-    alert("Sucesso! O texto '" + identificadorLink + "' foi enviado para a linha " + linhaPlanilha);
-    
-    // Salva a próxima linha (ex: 30) para o próximo link que você criar
-    localStorage.setItem('proximaLinhaLink', linhaPlanilha + 1);
-    
-    // Limpa os campos
-    document.getElementById('inputNumeroLink').value = '';
-    document.getElementById('inputUrlLink').value = '';
-}
-
-        function executarAcaoQuantidade2() {
-            const valor = document.getElementById('inputQuantidade2').value;
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
-
-            let formData = new FormData();
-            formData.append("entry.1725042433", valor);
-            formData.append("entry.718294531", "3");
-            formData.append("entry.790821356", "CONFIG_VALOR_NUMERO");
-
-            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-            alert("Enviado com sucesso!");
+            try {
+                const resposta = await fetch(LINK_APP_SCRIPT, { 
+                    method: "POST", 
+                    body: JSON.stringify({
+                        usuario: usuarioAutenticado,
+                        senha: senhaAutenticada,
+                        colunaA: identificadorLink,
+                        colunaB: linkDestino
+                    })
+                });
+                const dados = await resposta.json();
+                if(dados.status === "erro") throw new Error(dados.mensagem);
+                alert("Link '" + identificadorLink + "' salvo com sucesso na planilha!");
+                
+                document.getElementById('inputNumeroLink').value = '';
+                document.getElementById('inputUrlLink').value = '';
+            } catch (erro) {
+                alert("Erro ao salvar: " + erro.message);
+            }
         }
 
-        function executarAcaoQuantidade3() {
-            const valor = document.getElementById('inputQuantidade3').value;
-            const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdFiSZOq3SxyWXi8STPisBpeAvSAYScVMW2h29uiznnWc9lWw/formResponse";
+        // 6. OS MODAIS DE LÁPIS (EDIÇÃO DIRECTA DO LAYOUT)
+        async function executarAcao() {
+            const valorInput = document.getElementById('modalInput' + currentModalId).value;
+            
+            // Aqui descobrimos o nome real do identificador (ex: SORTEIO, Nome-Perfil, etc.)
+            // baseado no texto que já existia no elemento editado.
+            let identificadorA = "EDITADO";
+            if (currentTarget) {
+                // Se for imagem, tentamos rastrear pelo ID/Contexto, se for texto usamos o antigo ou uma estrutura padrão
+                identificadorA = currentTarget.id || currentTarget.className || "CAMPO_" + currentModalId;
+            }
 
-            let formData = new FormData();
-            formData.append("entry.1725042433", valor);
-            formData.append("entry.718294531", "4");
-            formData.append("entry.790821356", "CONFIG_CHAVE_PIX");
+            try {
+                if (modoSelecionado === 'editar') {
+                    const resposta = await fetch(LINK_APP_SCRIPT, { 
+                        method: "POST", 
+                        body: JSON.stringify({
+                            usuario: usuarioAutenticado,
+                            senha: senhaAutenticada,
+                            colunaA: identificadorA, // Identifica qual lápis foi clicado
+                            colunaB: valorInput      // O novo texto/imagem digitado
+                        })
+                    });
+                    
+                    const dados = await resposta.json();
+                    if(dados.status === "erro") throw new Error(dados.mensagem);
 
-            fetch(formUrl, { method: "POST", mode: "no-cors", body: formData });
-            alert("Enviado com sucesso!");
+                    // Se deu sucesso no Google, atualiza o visual da tela na mesma hora
+                    if (currentType === 'image') currentTarget.src = valorInput;
+                    else currentTarget.innerText = valorInput;
+                    
+                    alert("Alteração salva com sucesso!");
+                }
+            } catch (erro) {
+                alert("Erro na sincronização: " + erro.message);
+            }
+
+            closeModal(currentModalId);
         }
+
 
         function executarAcao() {
             const valorInput = document.getElementById('modalInput' + currentModalId).value;
